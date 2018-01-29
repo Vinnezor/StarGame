@@ -40,11 +40,14 @@ public class MenuScreen extends Base2DScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(bgTexture, 0, 0);
-        batch.draw(planet.getTexture(), planet.getPosition().x, planet.getPosition().y);
+        update(delta);
         batch.end();
     }
 
     public void update(float delta) {
+        planet.setDt(delta);
+        planet.updatePosition();
+        batch.draw(planet.getTexture(), planet.getPosition().x, planet.getPosition().y);
 
     }
 

@@ -10,13 +10,18 @@ public class Planet {
     private Texture texture;
     private Vector2 position;
     private Vector2 velosity;
-    private float startX;
-    private float startY;
+    private Vector2 sizeVector;
+    private Vector2 finish;
+    private float startX = 100;
+    private float startY = 100;
+    private float dt;
 
     public Planet (String texturePath) {
         texture = new Texture(texturePath);
         position = new Vector2(startX, startY);
-        velosity = new Vector2(50, 50);
+        velosity = new Vector2();
+        sizeVector = new Vector2(0, 0);
+        finish = new Vector2();
     }
 
     public Texture getTexture() {
@@ -32,18 +37,23 @@ public class Planet {
     }
 
     public void setPosition(float x, float y) {
-        position.x = x - (texture.getWidth() / 2);
-        position.y = y - (texture.getHeight() / 2);
-        System.out.println(position.x +" "+ position.y);
+        sizeVector.set(0, 0);
+        finish.set(0, 0);
+        sizeVector.add(x - (texture.getWidth() / 2), y - (texture.getHeight() / 2));
+        finish.add(sizeVector);
+        sizeVector.sub(position);
     }
 
-    public Vector2 getVelosity() {
-        return velosity;
+    public void setDt(float dt) {
+        this.dt = dt;
     }
 
-    public void setVelosity(Vector2 velosity) {
-        this.velosity = velosity;
+    public void updatePosition() {
+        if(!position.epsilonEquals(finish, 1f)) {
+            velosity.add(sizeVector);
+            velosity.scl(dt);
+            position.add(velosity);
+        }
+
     }
-
-
 }
