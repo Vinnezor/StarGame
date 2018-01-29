@@ -13,8 +13,8 @@ public class ImageDrive {
     private Texture img;
     private int imgHeight;
     private int imgWidth;
-    private int vx = 100;
-    private int vy = 100;
+    private float vx = 100f;
+    private float vy = 100f;
 
     ImageDrive() {
         imgWidth = 100;
@@ -42,7 +42,7 @@ public class ImageDrive {
         checkBorder(position.x, position.y);
         velosity.add(vx, vy);
         velosity.scl(dt);
-        position.add(velosity.x, velosity.y);
+        position.add(velosity);
     }
 
     public Vector2 getPosition() {
