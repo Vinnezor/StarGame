@@ -4,12 +4,28 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+
+
+import ru.geekbrains.stargame.engine.math.MatrixUtils;
+import ru.geekbrains.stargame.engine.math.Rect;
 
 
 public class Base2DScreen implements Screen, InputProcessor {
 
     private Game game;
-    private int height;
+    private Rect screenBounds; //границы области рисования в пикселях
+    private Rect worldBounds; //границы проекции мировых координат
+    private Rect glBounds; //дефолтные проекции мира gl
+
+    protected Matrix4 worldGl;
+    protected Matrix3 screenToWorld;
+
+    protected SpriteBatch batch;
+    private final Vector2 touch = new Vector2();
 
     public Base2DScreen(Game game) {
         this.game = game;
@@ -35,20 +51,40 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchDown - screenX > " + screenX + " screenY > " + (height - screenY) );
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        System.out.println("touchDown - screenX > " + touch.x + " screenY > " + touch.y );
+        touchDown(touch, pointer);
         return false;
+    }
+
+
+    protected void touchDown(Vector2 touch, int pointer) {
+
+
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchUp - screenX > " + screenX + " screenY > " + (height - screenY) );
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        System.out.println("touchUp - screenX > " + touch.x + " screenY > " + touch.y );
+        touchUp(touch, pointer);
         return false;
+    }
+
+    protected void touchUp(Vector2 touch, int pointer) {
+
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        System.out.println("touchDragged - screenX > " + screenX + " screenY > " + (height - screenY) + " pointer " + pointer );
+        touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
+        System.out.println("touchDragged - screenX > " + touch.x + " screenY > " + touch.y );
+        touchDragged(touch, pointer);
         return false;
+    }
+
+    protected void touchDragged(Vector2 touch, int pointer) {
+
     }
 
     @Override
@@ -63,9 +99,15 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        System.out.println("show");
-        height = Gdx.graphics.getHeight();
         Gdx.input.setInputProcessor(this);
+        this.screenBounds = new Rect();
+        this.worldBounds = new Rect();
+        this.glBounds = new Rect(0, 0, 1f, 1f);
+        this.worldGl = new Matrix4();
+        this.screenToWorld = new Matrix3();
+        if(batch != null)
+            throw new RuntimeException("batch != null Повторная установка screen без dispose");
+        batch = new SpriteBatch();
     }
 
     @Override
@@ -73,9 +115,27 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     }
 
+
+
     @Override
     public void resize(int width, int height) {
         System.out.println("width " + width + " height " + height);
+        screenBounds.setSize(width, height);
+        screenBounds.setLeft(0);
+        screenBounds.setBottom(0);
+
+        float aspect = width / (float) height;
+        worldBounds.setHeight(1f);
+        worldBounds.setWidth(1f * aspect);
+        MatrixUtils.calcTransitionMatrix(worldGl, worldBounds, glBounds);
+        batch.setProjectionMatrix(worldGl);
+        MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
+        resize(worldBounds);
+
+    }
+
+    protected void resize(Rect worldBounds) {
+
     }
 
     @Override
@@ -95,10 +155,8 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        System.out.println("dispose");
+        batch.dispose();
+        batch = null;
     }
 
-    public int getHeight() {
-        return height;
-    }
 }
