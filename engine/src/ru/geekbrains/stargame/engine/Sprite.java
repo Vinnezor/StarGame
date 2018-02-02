@@ -22,6 +22,7 @@ public class Sprite extends Rect {
     }
 
     public void draw(SpriteBatch batch) {
+
         batch.draw(
                 regions[frame],
                 getLeft(), getBottom(), //точка отрисовки

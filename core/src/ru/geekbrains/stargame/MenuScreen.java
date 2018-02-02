@@ -18,9 +18,13 @@ import ru.geekbrains.stargame.planet.Planet;
 public class MenuScreen extends Base2DScreen{
 
     private Texture bgTexture;
+    private Texture btnPlayTexture;
+    private Texture btnExitGame;
     private Planet planet;
 
     private Background background;
+    private ButtonPlay btnPlay;
+    private ButtonExit btnExit;
 
     public MenuScreen(Game game) {
         super(game);
@@ -31,8 +35,12 @@ public class MenuScreen extends Base2DScreen{
     public void show() {
         super.show();
         bgTexture = new Texture("bg.jpeg");
-        planet = new Planet("planet/planet.png");
+        btnPlayTexture = new Texture("play4.png");
+        btnExitGame = new Texture("exit2.png");
+//        planet = new Planet("planet/planet.png");
         background = new Background(new TextureRegion(bgTexture));
+        btnPlay = new ButtonPlay(new TextureRegion(btnPlayTexture));
+        btnExit = new ButtonExit(new TextureRegion(btnExitGame));
     }
 
     @Override
@@ -42,6 +50,8 @@ public class MenuScreen extends Base2DScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
+        btnPlay.draw(batch);
+        btnExit.draw(batch);
         //batch.draw(bgTexture,-0.5f, -0.5f, 1f, 1f);
         //batch.draw(planet.getTexture(), -1f, -1f, 2f, 2f);
         //update(delta);
@@ -64,13 +74,15 @@ public class MenuScreen extends Base2DScreen{
     protected void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        btnPlay.resize(worldBounds);
+        btnExit.resize(worldBounds);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-
-        planet.getTexture().dispose();
+        btnPlayTexture.dispose();
+       // planet.getTexture().dispose();
         bgTexture.dispose();
     }
 

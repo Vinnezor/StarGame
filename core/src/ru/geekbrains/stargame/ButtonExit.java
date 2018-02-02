@@ -5,20 +5,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 
+public class ButtonExit extends Sprite {
 
-public class Background extends Sprite {
-
-    public Background(TextureRegion region) {
+    public ButtonExit(TextureRegion region) {
         super(region);
-        setScale(2f);
+        setSize(0.2f, 0.2f);
+
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(worldBounds.getHeight());
-        pos.set(worldBounds.pos);
-
+        setRight(worldBounds.getRight());
+        setBottom(worldBounds.getBottom());
     }
-
-
 }

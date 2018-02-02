@@ -2,23 +2,25 @@ package ru.geekbrains.stargame;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 
 
-public class Background extends Sprite {
+public class ButtonPlay extends Sprite {
 
-    public Background(TextureRegion region) {
+    public ButtonPlay(TextureRegion region) {
         super(region);
-        setScale(2f);
+        setSize(0.2f, 0.2f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(worldBounds.getHeight());
-        pos.set(worldBounds.pos);
-
+        setLeft(worldBounds.getLeft());
+        setBottom(worldBounds.getBottom());
     }
+
+
 
 
 }
