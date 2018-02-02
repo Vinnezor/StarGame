@@ -19,7 +19,7 @@ public class MenuScreen extends Base2DScreen{
 
     private Texture bgTexture;
     private Texture btnPlayTexture;
-    private Texture btnExitGame;
+    private Texture btnExitGameTexture;
     private Planet planet;
 
     private Background background;
@@ -36,11 +36,11 @@ public class MenuScreen extends Base2DScreen{
         super.show();
         bgTexture = new Texture("bg.jpeg");
         btnPlayTexture = new Texture("play4.png");
-        btnExitGame = new Texture("exit2.png");
+        btnExitGameTexture = new Texture("exit2.png");
 //        planet = new Planet("planet/planet.png");
         background = new Background(new TextureRegion(bgTexture));
         btnPlay = new ButtonPlay(new TextureRegion(btnPlayTexture));
-        btnExit = new ButtonExit(new TextureRegion(btnExitGame));
+        btnExit = new ButtonExit(new TextureRegion(btnExitGameTexture));
     }
 
     @Override
@@ -82,6 +82,7 @@ public class MenuScreen extends Base2DScreen{
     public void dispose() {
         super.dispose();
         btnPlayTexture.dispose();
+        btnExitGameTexture.dispose();
        // planet.getTexture().dispose();
         bgTexture.dispose();
     }
