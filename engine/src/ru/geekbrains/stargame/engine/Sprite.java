@@ -40,7 +40,6 @@ public class Sprite extends Rect {
     }
 
     public void setHeightProportion(float height) {
-
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / regions[frame].getRegionHeight();
         setWidth(height * aspect);
