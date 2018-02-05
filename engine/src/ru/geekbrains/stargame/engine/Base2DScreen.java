@@ -16,7 +16,7 @@ import ru.geekbrains.stargame.engine.math.Rect;
 
 public class Base2DScreen implements Screen, InputProcessor {
 
-    private Game game;
+    protected Game game;
     private Rect screenBounds; //границы области рисования в пикселях
     private Rect worldBounds; //границы проекции мировых координат
     private Rect glBounds; //дефолтные проекции мира gl
@@ -119,7 +119,6 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        System.out.println("width " + width + " height " + height);
         screenBounds.setSize(width, height);
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
