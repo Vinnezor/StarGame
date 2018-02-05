@@ -1,17 +1,16 @@
 package ru.geekbrains.stargame.ui;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-
-import ru.geekbrains.stargame.engine.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.engine.ui.ScaledTouchUpButton;
 
 
-public class ButtonPlay extends Sprite {
+public class ButtonPlay extends ScaledTouchUpButton {
 
-    public ButtonPlay(TextureRegion region) {
-        super(region);
-        setSize(0.2f, 0.2f);
+    public ButtonPlay(TextureAtlas atlas, float pressScale, ActionListener actionListener) {
+        super(atlas.findRegion("btPlay"), pressScale, actionListener);
     }
 
     @Override
