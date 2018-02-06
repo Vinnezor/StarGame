@@ -70,6 +70,7 @@ public class MainShip extends Sprite {
         else velocity.set(velocity.x, velocity.y);
     }
 
+
     public void moveStop() {
         velocity.set(0, velocity.y);
     }

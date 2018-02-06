@@ -108,7 +108,7 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keyDown(keycode)) mainShip.moveStop();
+        mainShip.moveStop();
         return false;
     }
 
