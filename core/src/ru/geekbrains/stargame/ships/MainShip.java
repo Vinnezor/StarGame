@@ -13,6 +13,8 @@ public class MainShip extends Sprite {
     private TextureRegion mainShipRegion;
     private Vector2 velocity;
     private Rect worldBounds;
+    private Vector2 slowDown = new Vector2(0, -0.0003f);
+    private float velocityMoveY = 0.015f;
 
 
     public MainShip(TextureAtlas atlas, float height) {
@@ -48,7 +50,31 @@ public class MainShip extends Sprite {
     public void checkBounds() {
         if (getLeft() < worldBounds.getLeft()) setLeft(worldBounds.getLeft());
         else if (getRight() > worldBounds.getRight()) setRight(worldBounds.getRight());
+        if (velocity.y > 0 || getBottom() > worldBounds.getBottom()) velocity.add(slowDown);
+        else {
+            velocity.y = 0;
+            setBottom(worldBounds.getBottom());
+        }
     }
+
+    public void moveRight() {
+        velocity.set(0.01f, velocity.y);
+    }
+
+    public void moveLeft() {
+        velocity.set(-0.01f, velocity.y);
+    }
+
+    public void moveUp() {
+        if(velocity.y == 0) velocity.set(velocity.x, velocityMoveY);
+        else velocity.set(velocity.x, velocity.y);
+    }
+
+    public void moveStop() {
+        velocity.set(0, velocity.y);
+    }
+
+
 
 
 }

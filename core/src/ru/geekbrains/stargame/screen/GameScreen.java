@@ -92,19 +92,23 @@ public class GameScreen extends Base2DScreen {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == 21) {
-            mainShip.setVelocity(-0.01f, 0);
-            return true;// left 21 right 22
+            mainShip.moveLeft();
+            return true;// left 21
         }
         if(keycode == 22) {
-            mainShip.setVelocity(0.01f, 0);
-            return true;// left 21 right 22
+            mainShip.moveRight();
+            return true;// right 22
+        }
+        if(keycode == 19) {
+            mainShip.moveUp();
+            return true; //up 19
         }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keyDown(keycode)) mainShip.setVelocity(0, 0);
+        if (keyDown(keycode)) mainShip.moveStop();
         return false;
     }
 
