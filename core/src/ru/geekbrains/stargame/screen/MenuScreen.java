@@ -9,11 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 import ru.geekbrains.stargame.Background;
 import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.engine.math.Rnd;
 import ru.geekbrains.stargame.planet.Planet;
+import ru.geekbrains.stargame.star.Star;
 import ru.geekbrains.stargame.ui.ButtonExit;
 import ru.geekbrains.stargame.ui.ButtonPlay;
 
@@ -30,6 +34,9 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private Background background;
     private ButtonPlay btnPlay;
     private ButtonExit btnExit;
+    private Star star;
+
+    private ArrayList<Star> stars;
 
     public MenuScreen(Game game) {
         super(game);
@@ -49,25 +56,38 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         btnExit = new ButtonExit(atlas, BUTTON_PRESS_SCALE, this);
         btnExit.setHeightProportion(BUTTON_HEIGHT);
 
-
+        stars = new ArrayList<Star>(10);
+        for (int i = 0; i < 10 ; i++) {
+            stars.add(new Star(atlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
+        }
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        update(delta);
+        draw();
+    }
+
+    public void update(float delta) {
+        for (int i = 0; i < stars.size(); i++) {
+            stars.get(i).update(delta);
+        }
+        background.update(delta);
+
+    }
+
+    public void draw() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
+        for (int i = 0; i < stars.size(); i++) {
+            stars.get(i).draw(batch);
+        }
         btnPlay.draw(batch);
         btnExit.draw(batch);
         batch.end();
-    }
-
-    public void update(float delta) {
-//        planet.setDt(delta);
-//        planet.updatePosition();
-//        batch.draw(planet.getTexture(), planet.getPosition().x, planet.getPosition().y);
     }
 
     @Override
@@ -88,6 +108,9 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     protected void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        for (int i = 0; i < stars.size() ; i++) {
+          stars.get(i).resize(worldBounds);
+        }
         btnExit.resize(worldBounds);
         btnPlay.resize(worldBounds);
     }
