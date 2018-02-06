@@ -16,7 +16,7 @@ public class Sprite extends Rect {
 
     public Sprite (TextureRegion region){
         if(region == null)
-            throw new NullPointerException("Пустой Textrure region");
+            throw new NullPointerException("Empty Textrure region");
         regions = new TextureRegion[1];
         regions[0] = region;
     }

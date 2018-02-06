@@ -93,7 +93,6 @@ public class GameScreen extends Base2DScreen {
     public boolean keyDown(int keycode) {
         if(keycode == 21) {
             mainShip.setVelocity(-0.01f, 0);
-            System.out.println(true);
             return true;// left 21 right 22
         }
         if(keycode == 22) {

@@ -17,7 +17,7 @@ public class MainShip extends Sprite {
 
     public MainShip(TextureAtlas atlas, float height) {
         super(atlas.findRegion("main_ship"));
-        cuteRegion();
+        cutRegion();
         setHeightProportion(height);
         regions[0] = mainShipRegion;
         velocity = new Vector2(pos);
@@ -29,10 +29,10 @@ public class MainShip extends Sprite {
         setBottom(worldBounds.getBottom());
     }
 
-    public void cuteRegion() {
+    public void cutRegion() {
         TextureRegion region = regions[0];
-        int cuteWidth = region.getRegionWidth() / 2;
-        mainShipRegion = new TextureRegion(region, 0, 0, cuteWidth, region.getRegionHeight());
+        int cutWidth = region.getRegionWidth() / 2;
+        mainShipRegion = new TextureRegion(region, 0, 0, cutWidth, region.getRegionHeight());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MainShip extends Sprite {
 
     public void checkBounds() {
         if (getLeft() < worldBounds.getLeft()) setLeft(worldBounds.getLeft());
-        if (getRight() > worldBounds.getRight()) setRight(worldBounds.getRight());
+        else if (getRight() > worldBounds.getRight()) setRight(worldBounds.getRight());
     }
 
 
