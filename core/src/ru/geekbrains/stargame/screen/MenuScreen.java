@@ -30,11 +30,11 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private Texture bgTexture;
     private Planet planet;
     private TextureAtlas atlas;
+    private final int COUNT_STARS_ON_SCREEN = 100;
 
     private Background background;
     private ButtonPlay btnPlay;
     private ButtonExit btnExit;
-    private Star star;
 
     private ArrayList<Star> stars;
 
@@ -56,8 +56,8 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         btnExit = new ButtonExit(atlas, BUTTON_PRESS_SCALE, this);
         btnExit.setHeightProportion(BUTTON_HEIGHT);
 
-        stars = new ArrayList<Star>(10);
-        for (int i = 0; i < 10 ; i++) {
+        stars = new ArrayList<Star>(COUNT_STARS_ON_SCREEN);
+        for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
             stars.add(new Star(atlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
         }
     }

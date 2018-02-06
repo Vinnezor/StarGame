@@ -64,7 +64,6 @@ public class Sprite extends Rect {
 
     protected void touchDragged(Vector2 touch, int pointer) {
 
-
     }
 
     public void update(float dt) {
