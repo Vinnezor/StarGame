@@ -20,8 +20,8 @@ public class MainShip extends Sprite {
     public MainShip(TextureAtlas atlas, float height) {
         super(atlas.findRegion("main_ship"));
         cutRegion();
-        setHeightProportion(height);
         regions[0] = mainShipRegion;
+        setHeightProportion(height);
         velocity = new Vector2(pos);
     }
 
