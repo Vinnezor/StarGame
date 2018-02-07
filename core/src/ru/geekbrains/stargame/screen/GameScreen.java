@@ -2,10 +2,12 @@ package ru.geekbrains.stargame.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
@@ -19,11 +21,10 @@ import ru.geekbrains.stargame.star.Star;
 
 public class GameScreen extends Base2DScreen {
 
-    private final int COUNT_STARS_ON_SCREEN = 10;
-    private final float SHIPS_HEIGHT = 0.15f;
+    private final int COUNT_STARS_ON_SCREEN = 20;
+
 
     private Texture bgTexture;
-    private TextureAtlas starsAtlas;
     private TextureAtlas mainAtlas;
     private Background background;
 
@@ -41,12 +42,11 @@ public class GameScreen extends Base2DScreen {
         super.show();
         bgTexture = new Texture("gameBG.png");
         background = new Background(new TextureRegion(bgTexture));
-        starsAtlas = new TextureAtlas("menuAtlas.tpack");
         mainAtlas = new TextureAtlas("mainAtlas.tpack");
         stars = new ArrayList<Star>(COUNT_STARS_ON_SCREEN);
-        mainShip = new MainShip(mainAtlas, SHIPS_HEIGHT);
+        mainShip = new MainShip(mainAtlas);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
-            stars.add(new Star(starsAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
+            stars.add(new Star(mainAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
         }
 
     }
@@ -91,32 +91,32 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == 21) {
-            mainShip.moveLeft();
-            return true;// left 21
-        }
-        if(keycode == 22) {
-            mainShip.moveRight();
-            return true;// right 22
-        }
-        if(keycode == 19) {
-            mainShip.moveUp();
-            return true; //up 19
-        }
+        mainShip.keyDown(keycode);
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        mainShip.moveStop();
+        mainShip.keyUp(keycode);
         return false;
+    }
+
+    @Override
+    protected void touchDown(Vector2 touch, int pointer) {
+        mainShip.touchDown(touch, pointer);
+    }
+
+    @Override
+    protected void touchUp(Vector2 touch, int pointer) {
+        mainShip.touchUp(touch, pointer);
     }
 
     @Override
     public void dispose() {
 
         super.dispose();
-        starsAtlas.dispose();
+        mainAtlas.dispose();
         bgTexture.dispose();
+
     }
 }
