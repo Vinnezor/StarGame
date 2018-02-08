@@ -15,6 +15,7 @@ public class Sprite extends Rect {
     protected TextureRegion[] regions;
     protected int frame;
     protected boolean isDestroyed;
+    protected SpriteBatch batch;
 
     public Sprite (TextureRegion region){
         if(region == null)
@@ -28,7 +29,7 @@ public class Sprite extends Rect {
     }
 
     public void draw(SpriteBatch batch) {
-
+        this.batch = batch;
         batch.draw(
                 regions[frame],
                 getLeft(), getBottom(), //точка отрисовки

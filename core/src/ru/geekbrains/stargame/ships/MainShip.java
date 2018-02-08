@@ -2,34 +2,32 @@ package ru.geekbrains.stargame.ships;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.weapon.MainBullet;
 
 
 public class MainShip extends Sprite {
 
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
-    private TextureRegion mainShipRegion;
     private Vector2 velocity;
-    private final Vector2 velocityX = new Vector2(0.5f, 0);
+    private final Vector2 velocityX;
     private Rect worldBounds;
-    private Vector2 slowDown = new Vector2(0, -0.0003f);
-    private float velocityMoveY = 0.015f;
     private boolean pressedLeft;
     private boolean pressedRight;
-
+    private TextureAtlas atlas;
+    private MainBullet bullet;
 
 
     public MainShip(TextureAtlas atlas) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
-//        cutRegion();
-//        regions[0] = mainShipRegion;
+        this.atlas = atlas;
         setHeightProportion(SHIPS_HEIGHT);
-        velocity = new Vector2(pos);
+        velocity = new Vector2();
+        velocityX = new Vector2(0.5f, 0);
     }
 
     @Override
@@ -38,20 +36,12 @@ public class MainShip extends Sprite {
         setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
     }
 
-//    public void cutRegion() {
-//        TextureRegion region = regions[0];
-//        int cutWidth = region.getRegionWidth() / 2;
-//        mainShipRegion = new TextureRegion(region, 0, 0, cutWidth, region.getRegionHeight());
-//    }
-
     @Override
     public void update(float dt) {
         pos.mulAdd(velocity, dt);
-        checkBounds();
-    }
 
-    public void setVelocity(float vx, float vy) {
-        velocity.set(vx, vy);
+
+        checkBounds();
     }
 
     public void checkBounds() {
@@ -63,24 +53,14 @@ public class MainShip extends Sprite {
             setRight(worldBounds.getRight());
             moveStop();
         }
-        if (velocity.y > 0 || getBottom() > worldBounds.getBottom() + BOTTOM_MARGIN) velocity.add(slowDown);
-        else {
-            velocity.y = 0;
-            setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
-        }
     }
 
     public void moveRight() {
-        velocity.set(0.5f, velocity.y);
+        velocity.set(velocityX);
     }
 
     public void moveLeft() {
-        velocity.set(-0.5f, velocity.y);
-    }
-
-    public void moveUp() {
-        if(velocity.y == 0) velocity.set(velocity.x, velocityMoveY);
-        else velocity.set(velocity.x, velocity.y);
+        velocity.set(velocityX).rotate(180);
     }
 
 
@@ -114,10 +94,11 @@ public class MainShip extends Sprite {
                 pressedRight = true;
                 moveRight();
                 break;
+            case Input.Keys.W:
+            case Input.Keys.UP:
+
+                break;
         }
-//        if(keycode == Input.Keys.UP) {
-//            moveUp();
-//        }
     }
 
     public void keyUp(int keycode) {
