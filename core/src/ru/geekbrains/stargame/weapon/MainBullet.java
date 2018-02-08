@@ -11,9 +11,6 @@ public class MainBullet extends Sprite {
     private Vector2 velocity;
     private final float vy = 0.5f;
     private Rect worldBounds;
-    private TextureAtlas atlas;
-
-
 
     public MainBullet(TextureAtlas atlas) {
         super(atlas.findRegion("bulletMainShip"));
@@ -30,6 +27,7 @@ public class MainBullet extends Sprite {
     @Override
     public void update(float dt) {
         pos.mulAdd(velocity, dt);
+        if(getBottom() > worldBounds.getTop()) setDestroyed(true);
 
     }
 

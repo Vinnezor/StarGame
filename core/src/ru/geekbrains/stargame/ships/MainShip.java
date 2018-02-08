@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.weapon.MainBullet;
+import ru.geekbrains.stargame.weapon.MainBulletPool;
 
 
 public class MainShip extends Sprite {
@@ -18,13 +19,11 @@ public class MainShip extends Sprite {
     private Rect worldBounds;
     private boolean pressedLeft;
     private boolean pressedRight;
-    private TextureAtlas atlas;
-    private MainBullet bullet;
+    private MainBulletPool bullets;
 
 
     public MainShip(TextureAtlas atlas) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
-        this.atlas = atlas;
         setHeightProportion(SHIPS_HEIGHT);
         velocity = new Vector2();
         velocityX = new Vector2(0.5f, 0);
@@ -68,6 +67,12 @@ public class MainShip extends Sprite {
         velocity.setZero();
     }
 
+    public void fire() {
+        MainBullet bullet = bullets.obtain();
+        bullet.pos.set(pos);
+        bullet.setBottom(getTop());
+    }
+
     @Override
     public void touchDown(Vector2 touch, int pointer) {
         if(worldBounds.pos.x > touch.x) {
@@ -75,6 +80,10 @@ public class MainShip extends Sprite {
         } else {
             moveRight();
         }
+    }
+
+    public void setBullets(MainBulletPool bullets) {
+        this.bullets = bullets;
     }
 
     @Override
@@ -96,10 +105,11 @@ public class MainShip extends Sprite {
                 break;
             case Input.Keys.W:
             case Input.Keys.UP:
-
+                fire();
                 break;
         }
     }
+
 
     public void keyUp(int keycode) {
         switch (keycode) {
