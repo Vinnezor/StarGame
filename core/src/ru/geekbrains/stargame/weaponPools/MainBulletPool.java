@@ -1,9 +1,10 @@
-package ru.geekbrains.stargame.weapon;
+package ru.geekbrains.stargame.weaponPools;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
+import ru.geekbrains.stargame.weapon.MainBullet;
 
 
 public class MainBulletPool extends SpritesPool<MainBullet> {

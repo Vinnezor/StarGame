@@ -33,26 +33,22 @@ public class Base2DScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        System.out.println("keyDown - " + keycode);
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        System.out.println("keyUp - " + keycode);
         return false;
     }
 
     @Override
     public boolean keyTyped(char character) {
-        System.out.println("keyTyped - " + character);
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        System.out.println("touchDown - screenX > " + touch.x + " screenY > " + touch.y );
         touchDown(touch, pointer);
         return false;
     }
@@ -66,7 +62,6 @@ public class Base2DScreen implements Screen, InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        System.out.println("touchUp - screenX > " + touch.x + " screenY > " + touch.y );
         touchUp(touch, pointer);
         return false;
     }
@@ -78,7 +73,6 @@ public class Base2DScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        System.out.println("touchDragged - screenX > " + touch.x + " screenY > " + touch.y );
         touchDragged(touch, pointer);
         return false;
     }

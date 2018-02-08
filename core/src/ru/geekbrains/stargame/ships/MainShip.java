@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.planet.Planet;
 import ru.geekbrains.stargame.weapon.MainBullet;
-import ru.geekbrains.stargame.weapon.MainBulletPool;
+import ru.geekbrains.stargame.weaponPools.MainBulletPool;
 
 
 public class MainShip extends Sprite {
@@ -75,9 +76,13 @@ public class MainShip extends Sprite {
 
     @Override
     public void touchDown(Vector2 touch, int pointer) {
+        System.out.println(getClass().getCanonicalName() + " pointer - " + pointer + " touch " + touch );
+
         if(worldBounds.pos.x > touch.x) {
+            pressedLeft = true;
             moveLeft();
         } else {
+            pressedRight = true;
             moveRight();
         }
     }
