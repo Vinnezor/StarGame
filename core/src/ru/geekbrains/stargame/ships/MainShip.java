@@ -3,44 +3,51 @@ package ru.geekbrains.stargame.ships;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.weapon.Bullet;
 import ru.geekbrains.stargame.weaponPools.BulletPool;
 
 
-public class MainShip extends Sprite {
+public class MainShip extends Ship {
 
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
     private final int INVALID_POINTER = -1;
-    private final Vector2 velocityX;
+    private final Vector2 velocityX = new Vector2(0.5f, 0);
 
-    private Vector2 velocity;
-    private Rect worldBounds;
+
     private boolean pressedLeft;
     private boolean pressedRight;
     private int pointerLeft = INVALID_POINTER;
     private int pointerRight = INVALID_POINTER;
-    private BulletPool bullets;
+    private BulletPool bulletPool;
 
 
-    public MainShip(TextureAtlas atlas) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         setHeightProportion(SHIPS_HEIGHT);
-        velocity = new Vector2();
-        velocityX = new Vector2(0.5f, 0);
+        this.bulletPool = bulletPool;
+        this.bulletRegion = atlas.findRegion("bulletMainShip");
+        this.bulletHeight = 0.01f;
+        this.bulletVel.set(0, 0.5f);
+        this.bulletDamage = 1;
+        this.reloadInterval = 0.3f;
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        this.worldBounds = worldBounds;
+        super.resize(worldBounds);
         setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
     }
 
     @Override
     public void update(float dt) {
         pos.mulAdd(velocity, dt);
+        reloadTimer += dt;
+        if(reloadTimer >= reloadInterval){
+            reloadTimer = 0;
+            shoot();
+        }
         checkBounds();
     }
 
@@ -66,12 +73,6 @@ public class MainShip extends Sprite {
 
     public void moveStop() {
         velocity.setZero();
-    }
-
-    public void fire() {
-        Bullet bullet = bullets.obtain();
-        bullet.pos.set(pos);
-        bullet.setBottom(getTop());
     }
 
     @Override
@@ -118,7 +119,7 @@ public class MainShip extends Sprite {
                 break;
             case Input.Keys.W:
             case Input.Keys.UP:
-                fire();
+                shoot();
                 break;
         }
     }

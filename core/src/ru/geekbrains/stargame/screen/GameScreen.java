@@ -22,13 +22,14 @@ import ru.geekbrains.stargame.weaponPools.BulletPool;
 public class GameScreen extends Base2DScreen {
 
     private final int COUNT_STARS_ON_SCREEN = 20;
+    private final BulletPool bullets = new BulletPool();
 
     private Texture bgTexture;
     private TextureAtlas mainAtlas;
     private Background background;
     private MainShip mainShip;
     private ArrayList<TrackingStar> stars;
-    private BulletPool bullets;
+
 
 
     public GameScreen(Game game) {
@@ -41,12 +42,11 @@ public class GameScreen extends Base2DScreen {
         bgTexture = new Texture("gameBG.png");
         background = new Background(new TextureRegion(bgTexture));
         mainAtlas = new TextureAtlas("mainAtlas.tpack");
-        mainShip = new MainShip(mainAtlas);
+        mainShip = new MainShip(mainAtlas, bullets);
         stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
             stars.add(new TrackingStar(mainAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f, mainShip.getVelocity()));
         }
-        bullets = new BulletPool(mainAtlas);
         mainShip.setBullets(bullets);
 
     }
@@ -54,8 +54,13 @@ public class GameScreen extends Base2DScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+        deleteAllDestroyed();
         draw();
         update(delta);
+    }
+
+    public void deleteAllDestroyed(){
+        bullets.freeAllDestroyedObjects();
     }
 
 
@@ -65,7 +70,6 @@ public class GameScreen extends Base2DScreen {
         }
         mainShip.update(delta);
         bullets.updateActiveObjects(delta);
-        bullets.freeAllDestroyedObjects();
     }
 
     public void draw() {
@@ -89,7 +93,6 @@ public class GameScreen extends Base2DScreen {
             stars.get(i).resize(worldBounds);
         }
         mainShip.resize(worldBounds);
-        bullets.setWorldBounds(worldBounds);
     }
 
     @Override
