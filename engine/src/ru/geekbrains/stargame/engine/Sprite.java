@@ -17,6 +17,10 @@ public class Sprite extends Rect {
     protected boolean isDestroyed = false;
     protected SpriteBatch batch;
 
+    public Sprite() {
+
+    }
+
     public Sprite (TextureRegion region){
         if(region == null)
             throw new NullPointerException("Empty Textrure region");

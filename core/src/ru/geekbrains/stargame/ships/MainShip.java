@@ -3,24 +3,26 @@ package ru.geekbrains.stargame.ships;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
-import ru.geekbrains.stargame.planet.Planet;
-import ru.geekbrains.stargame.weapon.MainBullet;
-import ru.geekbrains.stargame.weaponPools.MainBulletPool;
+import ru.geekbrains.stargame.weapon.Bullet;
+import ru.geekbrains.stargame.weaponPools.BulletPool;
 
 
 public class MainShip extends Sprite {
 
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
-    private Vector2 velocity;
+    private final int INVALID_POINTER = -1;
     private final Vector2 velocityX;
+
+    private Vector2 velocity;
     private Rect worldBounds;
     private boolean pressedLeft;
     private boolean pressedRight;
-    private MainBulletPool bullets;
+    private int pointerLeft = INVALID_POINTER;
+    private int pointerRight = INVALID_POINTER;
+    private BulletPool bullets;
 
 
     public MainShip(TextureAtlas atlas) {
@@ -39,8 +41,6 @@ public class MainShip extends Sprite {
     @Override
     public void update(float dt) {
         pos.mulAdd(velocity, dt);
-
-
         checkBounds();
     }
 
@@ -69,31 +69,39 @@ public class MainShip extends Sprite {
     }
 
     public void fire() {
-        MainBullet bullet = bullets.obtain();
+        Bullet bullet = bullets.obtain();
         bullet.pos.set(pos);
         bullet.setBottom(getTop());
     }
 
     @Override
     public void touchDown(Vector2 touch, int pointer) {
-        System.out.println(getClass().getCanonicalName() + " pointer - " + pointer + " touch " + touch );
-
-        if(worldBounds.pos.x > touch.x) {
-            pressedLeft = true;
+        if(pos.x > touch.x) {
+            if(pointerLeft != INVALID_POINTER) return;
+            pointerLeft = pointer;
             moveLeft();
         } else {
-            pressedRight = true;
+            if(pointerRight != INVALID_POINTER) return;
+            pointerRight = pointer;
             moveRight();
         }
     }
 
-    public void setBullets(MainBulletPool bullets) {
+    public void setBullets(BulletPool bullets) {
         this.bullets = bullets;
     }
 
     @Override
     public void touchUp(Vector2 touch, int pointer) {
-        moveStop();
+        if(pointerLeft == pointer) {
+            pointerLeft = INVALID_POINTER;
+            if (pointerRight != INVALID_POINTER) moveRight();
+            else moveStop();
+        } else if (pointerRight == pointer) {
+            pointerRight = INVALID_POINTER;
+            if(pointerLeft != INVALID_POINTER) moveLeft();
+            else moveStop();
+        }
     }
 
     public void keyDown(int keycode) {
@@ -139,5 +147,7 @@ public class MainShip extends Sprite {
         }
     }
 
-
+    public Vector2 getVelocity() {
+        return velocity;
+    }
 }

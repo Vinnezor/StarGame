@@ -4,11 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.ArrayList;
 
@@ -17,8 +15,8 @@ import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.math.Rnd;
 import ru.geekbrains.stargame.ships.MainShip;
-import ru.geekbrains.stargame.star.Star;
-import ru.geekbrains.stargame.weaponPools.MainBulletPool;
+import ru.geekbrains.stargame.star.TrackingStar;
+import ru.geekbrains.stargame.weaponPools.BulletPool;
 
 
 public class GameScreen extends Base2DScreen {
@@ -29,8 +27,8 @@ public class GameScreen extends Base2DScreen {
     private TextureAtlas mainAtlas;
     private Background background;
     private MainShip mainShip;
-    private ArrayList<Star> stars;
-    private MainBulletPool bullets;
+    private ArrayList<TrackingStar> stars;
+    private BulletPool bullets;
 
 
     public GameScreen(Game game) {
@@ -43,12 +41,12 @@ public class GameScreen extends Base2DScreen {
         bgTexture = new Texture("gameBG.png");
         background = new Background(new TextureRegion(bgTexture));
         mainAtlas = new TextureAtlas("mainAtlas.tpack");
-        stars = new ArrayList<Star>(COUNT_STARS_ON_SCREEN);
         mainShip = new MainShip(mainAtlas);
+        stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
-            stars.add(new Star(mainAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
+            stars.add(new TrackingStar(mainAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f, mainShip.getVelocity()));
         }
-        bullets = new MainBulletPool(mainAtlas);
+        bullets = new BulletPool(mainAtlas);
         mainShip.setBullets(bullets);
 
     }
