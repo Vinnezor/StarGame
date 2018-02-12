@@ -17,9 +17,7 @@ public class Sprite extends Rect {
     protected boolean isDestroyed = false;
     protected SpriteBatch batch;
 
-    public Sprite() {
-
-    }
+    public Sprite() {}
 
     public Sprite (TextureRegion region){
         if(region == null)
@@ -54,7 +52,10 @@ public class Sprite extends Rect {
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / (float)regions[frame].getRegionHeight();
         setWidth(height * aspect);
+
+
     }
+
 
     public void resize(Rect worldBounds){
 

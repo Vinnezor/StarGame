@@ -4,8 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
-import ru.geekbrains.stargame.weapon.Bullet;
-import ru.geekbrains.stargame.weaponPools.BulletPool;
+import ru.geekbrains.stargame.weapon.BulletPool;
 
 
 public class MainShip extends Ship {

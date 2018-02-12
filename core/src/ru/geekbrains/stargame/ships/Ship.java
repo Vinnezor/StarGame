@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.weapon.Bullet;
-import ru.geekbrains.stargame.weaponPools.BulletPool;
+import ru.geekbrains.stargame.weapon.BulletPool;
 
 public abstract class Ship extends Sprite {
 
