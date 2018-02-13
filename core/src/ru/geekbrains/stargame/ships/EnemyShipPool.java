@@ -17,6 +17,8 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
     private Rect worldBounds;
     private Sound shipShootSound;
     private MainShip mainShip;
+    private float timeToNewShip;
+    private float intervalToNewShip;
 
 
     public EnemyShipPool(TextureAtlas atlas, String[] namesShipsTextures, BulletPool bulletPool, Sound shipShootSound) {
@@ -24,6 +26,7 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
         this.namesShipsTextures = namesShipsTextures;
         this.bulletPool = bulletPool;
         this.shipShootSound = shipShootSound;
+        this.intervalToNewShip = 20f;
     }
 
     @Override
@@ -47,8 +50,13 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
         return true;
     }
 
-    public void addEnemyShip () {
+    public void addEnemyShip (float dt) {
         if (!isEnemyShipOnScreen()) createNewEnemyShip();
+        if(intervalToNewShip <= (timeToNewShip += dt)){
+            createNewEnemyShip();
+            timeToNewShip = 0;
+        }
+
     }
 
     private String rndEnemyShip (){

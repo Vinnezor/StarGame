@@ -98,7 +98,7 @@ public class GameScreen extends Base2DScreen {
             stars.get(i).update(delta);
         }
         mainShip.update(delta);
-        enemyShipPool.addEnemyShip();
+        enemyShipPool.addEnemyShip(delta);
         enemyShipPool.updateActiveObjects(delta);
         bullets.updateActiveObjects(delta);
         explosions.updateActiveObjects(delta);
