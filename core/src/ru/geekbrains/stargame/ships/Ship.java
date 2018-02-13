@@ -15,17 +15,20 @@ public abstract class Ship extends Sprite {
     protected final Vector2 bulletVel = new Vector2(); // скорость пули
 
     protected Vector2 velocityShipX;
-    protected Vector2 velocityShipY;
     protected Rect worldBounds; //границы мира
     protected BulletPool bullets;
     protected TextureRegion bulletRegion;
+    protected Sound shipShootSound;
 
     protected float bulletHeight;
     protected float reloadInterval;
     protected float reloadTimer;
 
     protected int bulletDamage;
-    protected Sound shipShootSound;
+
+    protected boolean shipNearLeftBound;
+    protected boolean shipNearRightBound;
+
 
     public Ship() {
 
@@ -38,10 +41,12 @@ public abstract class Ship extends Sprite {
     public void checkBounds() {
         if (getLeft() < worldBounds.getLeft()){
             setLeft(worldBounds.getLeft());
+            shipNearLeftBound = true;
             moveStop();
         }
         else if (getRight() > worldBounds.getRight()){
             setRight(worldBounds.getRight());
+            shipNearRightBound = true;
             moveStop();
         }
     }

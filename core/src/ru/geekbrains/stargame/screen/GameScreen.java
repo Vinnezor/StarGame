@@ -68,6 +68,7 @@ public class GameScreen extends Base2DScreen {
 
 
         enemyShipPool = new EnemyShipPool(mainAtlas , new String[] {"enemy0" , "enemy1", "enemy2"}, bullets,  enemyShipShootSounds);
+        enemyShipPool.setMainShip(mainShip);
         //enemyShip.setPropEnemyShip(mainAtlas, "enemy0", bullets, enemyShipShootSounds);
         stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {

@@ -14,8 +14,6 @@ public class MainShip extends Ship {
     private final float BOTTOM_MARGIN = 0.05f;
     private final int INVALID_POINTER = -1;
 
-
-
     private boolean pressedLeft;
     private boolean pressedRight;
     private int pointerLeft = INVALID_POINTER;
@@ -51,8 +49,6 @@ public class MainShip extends Ship {
         }
         checkBounds();
     }
-
-
 
     @Override
     public void touchDown(Vector2 touch, int pointer) {

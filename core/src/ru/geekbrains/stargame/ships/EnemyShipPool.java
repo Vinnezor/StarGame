@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.engine.math.Rnd;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.weapon.BulletPool;
 
@@ -15,6 +16,7 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
     private BulletPool bulletPool;
     private Rect worldBounds;
     private Sound shipShootSound;
+    private MainShip mainShip;
 
 
     public EnemyShipPool(TextureAtlas atlas, String[] namesShipsTextures, BulletPool bulletPool, Sound shipShootSound) {
@@ -31,8 +33,9 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
 
     private void createNewEnemyShip() {
         EnemyShip enemy =  obtain();
-        enemy.setPropEnemyShip(atlas, "enemy2", bulletPool, shipShootSound);
+        enemy.setPropEnemyShip(atlas, rndEnemyShip(), bulletPool, shipShootSound);
         enemy.resize(worldBounds);
+        enemy.setMainShipPos(mainShip.pos);
     }
 
     public void resize(Rect worldBounds) {
@@ -48,4 +51,11 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
         if (isEnemyShipOnScreen()) createNewEnemyShip();
     }
 
+    private String rndEnemyShip (){
+        return namesShipsTextures[(int) Rnd.nextFloat(0, namesShipsTextures.length)];
+    }
+
+    public void setMainShip(MainShip mainShip) {
+        this.mainShip = mainShip;
+    }
 }
