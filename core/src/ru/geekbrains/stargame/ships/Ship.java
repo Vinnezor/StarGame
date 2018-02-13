@@ -14,6 +14,8 @@ public abstract class Ship extends Sprite {
     protected final Vector2 velocity = new Vector2(); //скорость корабля
     protected final Vector2 bulletVel = new Vector2(); // скорость пули
 
+    protected Vector2 velocityShipX;
+    protected Vector2 velocityShipY;
     protected Rect worldBounds; //границы мира
     protected BulletPool bullets;
     protected TextureRegion bulletRegion;
@@ -25,8 +27,36 @@ public abstract class Ship extends Sprite {
     protected int bulletDamage;
     protected Sound shipShootSound;
 
+    public Ship() {
+
+    }
+
     public Ship (TextureRegion region, int rows, int cols, int frame) {
        super(region, rows, cols, frame);
+    }
+
+    public void checkBounds() {
+        if (getLeft() < worldBounds.getLeft()){
+            setLeft(worldBounds.getLeft());
+            moveStop();
+        }
+        else if (getRight() > worldBounds.getRight()){
+            setRight(worldBounds.getRight());
+            moveStop();
+        }
+    }
+
+    public void moveRight() {
+        velocity.set(velocityShipX);
+    }
+
+    public void moveLeft() {
+        velocity.set(velocityShipX).rotate(180);
+    }
+
+
+    public void moveStop() {
+        velocity.setZero();
     }
 
     @Override

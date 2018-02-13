@@ -13,7 +13,7 @@ public class MainShip extends Ship {
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
     private final int INVALID_POINTER = -1;
-    private final Vector2 velocityX = new Vector2(0.5f, 0);
+
 
 
     private boolean pressedLeft;
@@ -25,6 +25,7 @@ public class MainShip extends Ship {
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound shipShootSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         setHeightProportion(SHIPS_HEIGHT);
+        this.velocityShipX = new Vector2(0.5f, 0);
         this.bullets = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletHeight = 0.01f;
@@ -51,29 +52,7 @@ public class MainShip extends Ship {
         checkBounds();
     }
 
-    public void checkBounds() {
-        if (getLeft() < worldBounds.getLeft()){
-            setLeft(worldBounds.getLeft());
-            moveStop();
-        }
-        else if (getRight() > worldBounds.getRight()){
-            setRight(worldBounds.getRight());
-            moveStop();
-        }
-    }
 
-    public void moveRight() {
-        velocity.set(velocityX);
-    }
-
-    public void moveLeft() {
-        velocity.set(velocityX).rotate(180);
-    }
-
-
-    public void moveStop() {
-        velocity.setZero();
-    }
 
     @Override
     public void touchDown(Vector2 touch, int pointer) {
