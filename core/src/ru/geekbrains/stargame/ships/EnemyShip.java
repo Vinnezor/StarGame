@@ -22,9 +22,10 @@ public class EnemyShip extends Ship {
             Sound shipShootSound
             ) {
         this.regions = Regions.split(atlas.findRegion(enemyTextureName), 1, 2, 2);
+        setHeightProportion(SHIPS_HEIGHT);
         this.velocityShipX = new Vector2(0.3f, 0);
         this.bullets = bulletPool;
-        this.bulletRegion = atlas.findRegion("bulletMainShip");
+        this.bulletRegion = atlas.findRegion("bulletEnemy");
         this.bulletHeight = 0.01f;
         this.bulletVel.set(0, -0.5f);
         this.bulletDamage = 1;
@@ -35,7 +36,6 @@ public class EnemyShip extends Ship {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        setHeightProportion(SHIPS_HEIGHT);
         setTop(worldBounds.getTop());
     }
 
@@ -44,4 +44,7 @@ public class EnemyShip extends Ship {
         pos.mulAdd(velocityShipX, dt);
         checkBounds();
     }
+
+
+
 }
