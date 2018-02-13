@@ -1,5 +1,6 @@
 package ru.geekbrains.stargame.ships;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -22,7 +23,7 @@ public abstract class Ship extends Sprite {
     protected float reloadTimer;
 
     protected int bulletDamage;
-
+    protected Sound shipShootSound;
 
     public Ship (TextureRegion region, int rows, int cols, int frame) {
        super(region, rows, cols, frame);
@@ -35,6 +36,6 @@ public abstract class Ship extends Sprite {
 
     public void shoot() {
         Bullet bullet = bullets.obtain();
-        bullet.setBulletProp(this, bulletRegion, this.pos, bulletVel, bulletHeight, worldBounds, bulletDamage);
+        bullet.setBulletProp(this, bulletRegion, this.pos, bulletVel, bulletHeight, worldBounds, bulletDamage, shipShootSound);
     }
 }

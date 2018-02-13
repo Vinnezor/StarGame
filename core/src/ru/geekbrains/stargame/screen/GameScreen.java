@@ -35,6 +35,7 @@ public class GameScreen extends Base2DScreen {
     private MainShip mainShip;
     private ArrayList<TrackingStar> stars;
     private Sound soundExplosion;
+    private Sound mainShipShootSounds;
     private Music gameScreenMusic;
 
 
@@ -47,8 +48,9 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
 
-        //музыка
+        //музыка и звуки
         soundExplosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.wav"));
+        mainShipShootSounds = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
         gameScreenMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         gameScreenMusic.setLooping(true);
         gameScreenMusic.play();
@@ -59,15 +61,13 @@ public class GameScreen extends Base2DScreen {
 
         //Оостальные преобразования
         background = new Background(new TextureRegion(bgTexture));
-        mainShip = new MainShip(mainAtlas, bullets);
+        mainShip = new MainShip(mainAtlas, bullets, mainShipShootSounds);
         stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
             stars.add(new TrackingStar(mainAtlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f, mainShip.getVelocity()));
         }
 
         explosions = new ExplosionPool(mainAtlas, soundExplosion);
-        mainShip.setBullets(bullets);
-
     }
 
     @Override

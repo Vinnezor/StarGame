@@ -1,6 +1,7 @@
 package ru.geekbrains.stargame.ships;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
@@ -19,18 +20,18 @@ public class MainShip extends Ship {
     private boolean pressedRight;
     private int pointerLeft = INVALID_POINTER;
     private int pointerRight = INVALID_POINTER;
-    private BulletPool bulletPool;
 
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound shipShootSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         setHeightProportion(SHIPS_HEIGHT);
-        this.bulletPool = bulletPool;
+        this.bullets = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletHeight = 0.01f;
         this.bulletVel.set(0, 0.5f);
         this.bulletDamage = 1;
         this.reloadInterval = 0.3f;
+        this.shipShootSound = shipShootSound;
     }
 
     @Override

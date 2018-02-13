@@ -1,6 +1,6 @@
 package ru.geekbrains.stargame.weapon;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.Sprite;
@@ -24,7 +24,8 @@ public class Bullet extends Sprite {
             Vector2 velocity0,
             float height,
             Rect worldBounds,
-            int damage
+            int damage,
+            Sound sound
             ) {
         this.owner = owner;
         this.regions[0] = region;
@@ -33,6 +34,8 @@ public class Bullet extends Sprite {
         setHeightProportion(height);
         this.worldBounds = worldBounds;
         this.damage = damage;
+        sound.play();
+
     }
 
     @Override
@@ -56,4 +59,6 @@ public class Bullet extends Sprite {
     public void setOwner(Object owner) {
         this.owner = owner;
     }
+
+
 }
