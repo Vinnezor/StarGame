@@ -29,7 +29,7 @@ public class EnemyShip extends Ship {
         this.regions = Regions.split(atlas.findRegion(enemyTextureName), 1, 2, 2);
         setHeightProportion(SHIPS_HEIGHT);
         this.velocityShipX = new Vector2(0.2f, 0);
-        this.velocityShipY = new Vector2(0, -0.1f);
+        this.velocityShipY = new Vector2(0, -0.2f);
         this.bullets = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletEnemy");
         this.bulletHeight = 0.01f;
@@ -72,15 +72,12 @@ public class EnemyShip extends Ship {
     }
 
     private void leftOrRightMove() {
-        if(pos.isCollinearOpposite(mainShipPos)) {
-            moveStop();
+        if(mainShipPos.x > pos.x) {
+            moveRight();
         } else {
-            if(mainShipPos.x > pos.x) {
-                moveRight();
-            } else {
-                moveLeft();
-            }
+            moveLeft();
         }
+
     }
 
     public void setMainShipPos(Vector2 mainShipPos) {

@@ -43,12 +43,12 @@ public class EnemyShipPool extends SpritesPool<EnemyShip> {
     }
 
     private boolean isEnemyShipOnScreen() {
-        if(activeObjects.isEmpty()) return true;
-        return false;
+        if(activeObjects.isEmpty()) return false;
+        return true;
     }
 
     public void addEnemyShip () {
-        if (isEnemyShipOnScreen()) createNewEnemyShip();
+        if (!isEnemyShipOnScreen()) createNewEnemyShip();
     }
 
     private String rndEnemyShip (){
