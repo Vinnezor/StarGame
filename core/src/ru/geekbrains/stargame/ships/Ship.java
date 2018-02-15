@@ -126,6 +126,7 @@ public abstract class Ship extends Sprite {
             boom();
         }
 
+
     }
 
     public int getBulletDamage() {

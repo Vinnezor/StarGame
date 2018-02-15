@@ -171,6 +171,16 @@ public class GameScreen extends Base2DScreen {
                 }
             }
         }
+
+        // нанесение урона игровому кораблю
+        for (int i = 0; i < bulletsList.size(); i++) {
+            bullet = bulletsList.get(i);
+            if(bullet.isDestroyed()) continue;
+            if(bullet.getOwner() != mainShip && mainShip.isBulletCollision(bullet)) {
+                mainShip.damage(bullet.getDamage());
+                bullet.setDestroyed(true);
+            }
+        }
     }
 
     @Override

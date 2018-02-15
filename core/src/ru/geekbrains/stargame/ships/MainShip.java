@@ -76,6 +76,14 @@ public class MainShip extends Ship {
         }
     }
 
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() > pos.y
+        );
+    }
+
     public void keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
