@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.explosion.ExplosionPool;
 import ru.geekbrains.stargame.weapon.BulletPool;
 
 
@@ -20,17 +21,16 @@ public class MainShip extends Ship {
     private int pointerRight = INVALID_POINTER;
 
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound shipShootSound) {
-        super(atlas.findRegion("main_ship"), 1, 2, 2);
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool,  Rect worldBounds, Sound shipShootSound) {
+        super(atlas.findRegion("main_ship"), 1, 2, 2, bulletPool, explosionPool, worldBounds, shipShootSound);
         setHeightProportion(SHIPS_HEIGHT);
         this.velocityShipX = new Vector2(0.5f, 0);
-        this.bullets = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletHeight = 0.01f;
-        this.bulletVel.set(0, 0.5f);
+        this.bulletVel.set(0, 0.3f);
         this.bulletDamage = 1;
         this.reloadInterval = 0.3f;
-        this.shipShootSound = shipShootSound;
+        this.hp = 100;
     }
 
     @Override
@@ -41,12 +41,8 @@ public class MainShip extends Ship {
 
     @Override
     public void update(float dt) {
-        pos.mulAdd(velocity, dt);
-        reloadTimer += dt;
-        if(reloadTimer >= reloadInterval){
-            reloadTimer = 0;
-            shoot();
-        }
+        super.update(dt);
+        automaticFire(dt);
         checkBounds();
     }
 

@@ -24,8 +24,7 @@ public class Bullet extends Sprite {
             Vector2 velocity0,
             float height,
             Rect worldBounds,
-            int damage,
-            Sound sound
+            int damage
             ) {
         this.owner = owner;
         this.regions[0] = region;
@@ -34,7 +33,6 @@ public class Bullet extends Sprite {
         setHeightProportion(height);
         this.worldBounds = worldBounds;
         this.damage = damage;
-        sound.play();
 
     }
 

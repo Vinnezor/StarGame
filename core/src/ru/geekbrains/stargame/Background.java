@@ -10,7 +10,6 @@ public class Background extends Sprite {
 
     public Background(TextureRegion region) {
         super(region);
-        setScale(2f);
     }
 
     @Override
@@ -19,8 +18,5 @@ public class Background extends Sprite {
         pos.set(worldBounds.pos);
     }
 
-    public void update(float dt) {
-        setAngle(angle - dt);
-    }
 
 }

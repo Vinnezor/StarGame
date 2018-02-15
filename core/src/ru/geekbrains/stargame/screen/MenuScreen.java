@@ -30,7 +30,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private Texture bgTexture;
     private Planet planet;
     private TextureAtlas atlas;
-    private final int COUNT_STARS_ON_SCREEN = 100;
+    private final int COUNT_STARS_ON_SCREEN = 20;
 
     private Background background;
     private ButtonPlay btnPlay;
@@ -73,8 +73,6 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         for (int i = 0; i < stars.size(); i++) {
             stars.get(i).update(delta);
         }
-        background.update(delta);
-
     }
 
     public void draw() {
