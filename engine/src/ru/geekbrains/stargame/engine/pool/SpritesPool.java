@@ -67,10 +67,6 @@ public abstract class SpritesPool <T extends Sprite> {
         freeObjects.clear();
     }
 
-    public int getCountFreeBullet () {
-        return freeObjects.size();
-    }
-
     public List<T> getActiveObjects() {
         return activeObjects;
     }

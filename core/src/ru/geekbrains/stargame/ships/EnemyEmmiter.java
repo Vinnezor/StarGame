@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.math.Rnd;
 import ru.geekbrains.stargame.engine.utils.Regions;
+import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 public class EnemyEmmiter {
 
@@ -39,7 +40,6 @@ public class EnemyEmmiter {
     private Vector2 enemySmallVelocity = new Vector2(0f,  -0.2f);
     private Vector2 enemyMiddleVelocity = new Vector2(0f,  -0.1f);
     private Vector2 enemyBigVelocity = new Vector2(0f,  -0.05f);
-
     private float generateTimer;
     private float generateInterval;
 

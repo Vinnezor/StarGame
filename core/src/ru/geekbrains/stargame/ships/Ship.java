@@ -1,6 +1,5 @@
 package ru.geekbrains.stargame.ships;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -11,14 +10,12 @@ import ru.geekbrains.stargame.explosion.Explosion;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
 import ru.geekbrains.stargame.screen.GameScreen;
 import ru.geekbrains.stargame.weapon.Weapon;
-import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 public abstract class Ship extends Sprite {
 
     private static final float DAMAGE_ANIMATE_INTERVAL = 0.1f;
     private float damageAnimateTimer = DAMAGE_ANIMATE_INTERVAL;
 
-    protected final WeaponEmmiter weaponEmmiter = new WeaponEmmiter();
     protected final Vector2 weaponVel = new Vector2(); // скорость пули
     protected Vector2 velocity = new Vector2(); //скорость корабля
 
@@ -28,8 +25,6 @@ public abstract class Ship extends Sprite {
 
     protected ExplosionPool explosionShip;
     protected TextureRegion weaponRegion;
-    protected Sound shipShootSound;
-    protected float shipSoundVolume;
 
     protected float weaponHeight;
     protected float reloadInterval;
@@ -46,21 +41,19 @@ public abstract class Ship extends Sprite {
                  int frame,
                  SpritesPool weaponPool,
                  ExplosionPool explosionPool,
-                 Rect worldBounds,
-                 Sound shipShootSound
+                 Rect worldBounds
                 ) {
        super(region, rows, cols, frame);
         this.weaponPool = weaponPool;
         this.explosionShip = explosionPool;
         this.worldBounds = worldBounds;
-        this.shipShootSound = shipShootSound;
+
     }
 
-    public Ship(SpritesPool weaponPool, ExplosionPool explosionPool, Rect worldBounds, Sound shipShootSound) {
+    public Ship(SpritesPool weaponPool, ExplosionPool explosionPool, Rect worldBounds) {
         this.weaponPool = weaponPool;
         this.explosionShip = explosionPool;
         this.worldBounds = worldBounds;
-        this.shipShootSound = shipShootSound;
     }
 
     public void checkBounds() {
@@ -106,7 +99,7 @@ public abstract class Ship extends Sprite {
     public void shoot() {
         Weapon weapon = (Weapon) weaponPool.obtain();
         weapon.setProperties(this, weaponRegion, this.pos, weaponVel, weaponHeight, worldBounds, weaponDamage);
-        shipShootSound.setVolume(shipShootSound.play(), GameScreen.VOLUME);
+        weapon.soundPlay();
     }
 
     public void boom() {

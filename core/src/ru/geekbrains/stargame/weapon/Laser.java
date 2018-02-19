@@ -1,5 +1,6 @@
 package ru.geekbrains.stargame.weapon;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,9 +10,12 @@ import ru.geekbrains.stargame.engine.math.Rect;
 public class Laser extends Sprite implements Weapon {
 
     private final Vector2 velocity = new Vector2();
+    private Sound soundLaser;
+    private float volume;
     private Rect worldBounds;
     private int damage;
     private Object owner;
+
 
     public Laser() {
         regions = new TextureRegion[1];
@@ -57,4 +61,22 @@ public class Laser extends Sprite implements Weapon {
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
+
+    public Sound getSoundBullet() {
+        return soundLaser;
+    }
+
+    public float getVolume() {
+        return volume;
+    }
+
+    public void setSound(Sound soundLaser, float volume) {
+        this.soundLaser = soundLaser;
+        this.volume = volume;
+    }
+
+    public void soundPlay() {
+        soundLaser.setVolume(soundLaser.play(), volume);
+    }
+
 }

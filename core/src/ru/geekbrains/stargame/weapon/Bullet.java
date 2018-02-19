@@ -12,6 +12,8 @@ public class Bullet extends Sprite implements Weapon {
     private Rect worldBounds;
     private int damage;
     private Object owner;
+    private Sound soundBullet;
+    private float volume;
 
     public Bullet() {
         regions = new TextureRegion[1];
@@ -63,6 +65,15 @@ public class Bullet extends Sprite implements Weapon {
 
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
+    }
+
+    public void setSound(Sound soundBullet, float volume) {
+        this.soundBullet = soundBullet;
+        this.volume = volume;
+    }
+
+    public void soundPlay() {
+        soundBullet.setVolume(this.soundBullet.play(), volume);
     }
 
 

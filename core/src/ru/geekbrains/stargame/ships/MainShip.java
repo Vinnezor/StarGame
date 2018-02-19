@@ -7,8 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
-import ru.geekbrains.stargame.weapon.BulletPool;
-import ru.geekbrains.stargame.weapon.Weapon;
+import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 
 public class MainShip extends Ship {
@@ -16,27 +15,51 @@ public class MainShip extends Ship {
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
     private final int INVALID_POINTER = -1;
-
+    private TextureAtlas atlas;
+    private TextureAtlas alternativeAtlas;
+    private WeaponEmmiter weaponEmmiter;
     private boolean pressedLeft;
     private boolean pressedRight;
     private int pointerLeft = INVALID_POINTER;
     private int pointerRight = INVALID_POINTER;
 
 
-    public MainShip(TextureAtlas atlas, SpritesPool bulletPool, ExplosionPool explosionPool, Rect worldBounds, Sound shipShootSound) {
-        super(atlas.findRegion("main_ship"), 1, 2, 2, bulletPool, explosionPool, worldBounds, shipShootSound);
+    public MainShip(TextureAtlas atlas, SpritesPool weaponPool, ExplosionPool explosionPool, Rect worldBounds) {
+        super(atlas.findRegion("main_ship"), 1, 2, 2, weaponPool, explosionPool, worldBounds);
         setHeightProportion(SHIPS_HEIGHT);
         this.velocityShipX = new Vector2(0.5f, 0);
-        this.weaponRegion = atlas.findRegion("bulletMainShip");
+
+    }
+
+    public MainShip(TextureAtlas atlas, TextureAtlas alternativeAtlas , SpritesPool weaponPool, WeaponEmmiter weaponEmmiter, ExplosionPool explosionPool, Rect worldBounds) {
+        this(atlas, weaponPool, explosionPool, worldBounds);
+        this.atlas = atlas;
+        this.alternativeAtlas = alternativeAtlas;
+        this.weaponEmmiter = weaponEmmiter;
+    }
+
+
+
+    public void setWeapon() {
+        if(weaponEmmiter.getWeaponName().equals(WeaponEmmiter.WEAPON_BULLET)) {
+            weaponRegion = atlas.findRegion("bulletMainShip");
+            weaponHeight = 0.01f;
+            weaponVel.set(0, 0.3f);
+            weaponDamage = 1;
+            reloadInterval = 0.3f;
+        } else if(weaponEmmiter.getWeaponName().equals(WeaponEmmiter.WEAPON_LASER)) {
+            weaponRegion = alternativeAtlas.findRegion("greenLaserRay90");
+            weaponHeight = 0.07f;
+            weaponVel.set(0, 0.5f);
+            weaponDamage = 10;
+            reloadInterval = 1f;
+        }
 
     }
 
     public void setToNewGame(){
         pos.x = worldBounds.pos.x;
-        this.weaponHeight = 0.01f;
-        this.weaponVel.set(0, 0.3f);
-        this.weaponDamage = 1;
-        this.reloadInterval = 0.3f;
+        setWeapon();
         this.hp = 100;
         setDestroyed(false);
     }

@@ -3,38 +3,45 @@ mainAtlas2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-containerYellow
+red_laser90
   rotate: false
-  xy: 1, 420
-  size: 570, 550
-  orig: 570, 550
+  xy: 1, 293
+  size: 200, 600
+  orig: 200, 600
   offset: 0, 0
   index: -1
-rocket1
-  rotate: false
-  xy: 573, 330
-  size: 320, 640
-  orig: 320, 640
-  offset: 0, 0
-  index: -1
-repair
+greenLaserRay90
   rotate: false
   xy: 1, 1
-  size: 417, 417
-  orig: 417, 417
+  size: 74, 290
+  orig: 74, 290
   offset: 0, 0
   index: -1
-red_laser
+rocket1_small
   rotate: false
-  xy: 420, 128
-  size: 600, 200
-  orig: 600, 200
+  xy: 203, 693
+  size: 100, 200
+  orig: 100, 200
   offset: 0, 0
   index: -1
-greenLaserRay
+rocket_small
   rotate: false
-  xy: 420, 52
-  size: 290, 74
-  orig: 290, 74
+  xy: 77, 91
+  size: 100, 200
+  orig: 100, 200
+  offset: 0, 0
+  index: -1
+containerYellow1
+  rotate: false
+  xy: 203, 591
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+repair1
+  rotate: false
+  xy: 305, 793
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: -1

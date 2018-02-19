@@ -1,14 +1,10 @@
 package ru.geekbrains.stargame.ships;
 
-
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
-import ru.geekbrains.stargame.weapon.BulletPool;
-import ru.geekbrains.stargame.weapon.Weapon;
 
 public class EnemyShip extends Ship {
 
@@ -25,10 +21,9 @@ public class EnemyShip extends Ship {
                      SpritesPool bulletPool,
                      ExplosionPool explosionPool,
                      Rect worldBounds,
-                     MainShip mainShip,
-                     Sound shipShootSound
+                     MainShip mainShip
                 ) {
-        super(bulletPool, explosionPool, worldBounds, shipShootSound);
+        super(bulletPool, explosionPool, worldBounds);
         this.mainShip = mainShip;
         this.velocity.set(velocity0);
     }
@@ -51,7 +46,6 @@ public class EnemyShip extends Ship {
         this.weaponVel.set(0f, bulletVY);
         this.weaponDamage = bulletDamage;
         this.reloadInterval = reloadInterval;
-        this.shipSoundVolume = 1;
         this.hp = hp;
         setHeightProportion(height);
         this.velocity.set(descentVel);

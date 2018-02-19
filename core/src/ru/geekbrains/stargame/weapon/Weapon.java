@@ -1,6 +1,7 @@
 package ru.geekbrains.stargame.weapon;
 
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,9 +21,10 @@ public interface Weapon {
 
     void update(float dt);
     int getDamage();
-
     Object getOwner();
     boolean isDestroyed();
     void setDestroyed(boolean destroyed);
     Rect getRect();
+    void soundPlay();
+
 }
