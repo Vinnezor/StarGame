@@ -20,6 +20,7 @@ import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.font.Font;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.math.Rnd;
+import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
 import ru.geekbrains.stargame.ships.EnemyEmmiter;
 import ru.geekbrains.stargame.ships.EnemyShip;
@@ -30,6 +31,8 @@ import ru.geekbrains.stargame.ui.ButtonNewGame;
 import ru.geekbrains.stargame.ui.MessageGameOver;
 import ru.geekbrains.stargame.weapon.Bullet;
 import ru.geekbrains.stargame.weapon.BulletPool;
+import ru.geekbrains.stargame.weapon.Weapon;
+import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 
 public class GameScreen extends Base2DScreen implements ActionListener {
@@ -42,18 +45,20 @@ public class GameScreen extends Base2DScreen implements ActionListener {
     private final int COUNT_STARS_ON_SCREEN = 20;
     public final static float VOLUME = 0.1f;
     private static final float FONT_SIZE = 0.04f;
-    private final BulletPool bullets = new BulletPool();
+    private final WeaponEmmiter weaponEmmiter = new WeaponEmmiter();
     private ExplosionPool explosions;
     private Texture bgTexture;
     private TextureAtlas mainAtlas;
+    private TextureAtlas mainAtlas2;
     private Background background;
     private MainShip mainShip;
+    private SpritesPool startMainShipWeapon;
     private EnemyShipPool enemyShipPool;
     private EnemyEmmiter enemyEmmiter;
     private ArrayList<TrackingStar> stars;
     private Sound soundExplosion;
-    private Sound mainShipShootSounds;
-    private Sound enemyShipShootSounds;
+    private Sound soundBullet;
+    private Sound soundLaser;
     private Music gameScreenMusic;
     private MessageGameOver messageGameOver;
     private ButtonNewGame buttonNewGame;
@@ -77,8 +82,8 @@ public class GameScreen extends Base2DScreen implements ActionListener {
 
         //музыка и звуки
         soundExplosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.wav"));
-        mainShipShootSounds = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
-        enemyShipShootSounds = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
+        soundBullet = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+        soundLaser = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
         gameScreenMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         gameScreenMusic.setVolume(VOLUME);
         gameScreenMusic.setLooping(true);
@@ -87,12 +92,16 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         //текстуры
         bgTexture = new Texture("textures/gameBG.png");
         mainAtlas = new TextureAtlas("textures/mainAtlas.tpack");
+        mainAtlas2 = new TextureAtlas("textures/mainAtlas2.tpack");
+
 
         //Оостальные преобразования
         background = new Background(new TextureRegion(bgTexture));
         explosions = new ExplosionPool(mainAtlas, soundExplosion);
-        mainShip = new MainShip(mainAtlas, bullets,  explosions, worldBounds, mainShipShootSounds);
-        enemyShipPool = new EnemyShipPool(bullets, explosions, worldBounds, mainShip, enemyShipShootSounds);
+        weaponEmmiter.setWeaponBullet();
+        startMainShipWeapon = weaponEmmiter.createNewWeaponPool();
+        mainShip = new MainShip(mainAtlas, startMainShipWeapon,  explosions, worldBounds, soundBullet);
+        enemyShipPool = new EnemyShipPool(startMainShipWeapon, explosions, worldBounds, mainShip, soundLaser);
         enemyEmmiter = new EnemyEmmiter(mainAtlas, enemyShipPool, worldBounds);
         stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
@@ -129,7 +138,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
 
     public void deleteAllDestroyed(){
         enemyShipPool.freeAllDestroyedObjects();
-        bullets.freeAllDestroyedObjects();
+        startMainShipWeapon.freeAllDestroyedObjects();
         explosions.freeAllDestroyedObjects();
         enemyShipPool.freeAllDestroyedObjects();
     }
@@ -147,7 +156,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
                 mainShip.update(delta);
                 enemyShipPool.updateActiveObjects(delta);
                 enemyEmmiter.generateEnemy(delta, frags);
-                bullets.updateActiveObjects(delta);
+                startMainShipWeapon.updateActiveObjects(delta);
                 if (mainShip.isDestroyed()) state = State.GAMEOVER;
                 break;
             case GAMEOVER:
@@ -171,7 +180,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
             buttonNewGame.draw(batch);
         } else {
             enemyShipPool.drawActiveObjects(batch);
-            bullets.drawActiveObjects(batch);
+            startMainShipWeapon.drawActiveObjects(batch);
             mainShip.draw(batch);
         }
         batch.end();
@@ -194,7 +203,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         frags = 0;
         mainShip.setToNewGame();
         enemyShipPool.freeAllActiveObjects();
-        bullets.freeAllActiveObjects();
+        startMainShipWeapon.freeAllActiveObjects();
         //explosions.freeAllActiveObjects();
     }
 
@@ -217,18 +226,18 @@ public class GameScreen extends Base2DScreen implements ActionListener {
 
 
         //нанесение урона вражескому кораблю
-        List<Bullet> bulletsList = bullets.getActiveObjects();
-        Bullet bullet;
+        List<Weapon> weaponList = startMainShipWeapon.getActiveObjects();
+        Weapon weapon;
         for (int i = 0; i < enemyShipsList.size(); i++) {
             enemyShip = enemyShipsList.get(i);
             if (enemyShip.isDestroyed()) continue;
 
-            for (int j = 0; j < bulletsList.size(); j++) {
-                bullet = bulletsList.get(j);
-                if(bullet.getOwner() != mainShip || bullet.isDestroyed()) continue;
-                if(enemyShip.isBulletCollision(bullet)) {
-                    enemyShip.damage(bullet.getDamage());
-                    bullet.setDestroyed(true);
+            for (int j = 0; j < weaponList.size(); j++) {
+                weapon = weaponList.get(j);
+                if(weapon.getOwner() != mainShip || weapon.isDestroyed()) continue;
+                if(enemyShip.isBulletCollision(weapon.getRect())) {
+                    enemyShip.damage(weapon.getDamage());
+                    weapon.setDestroyed(true);
                     if(enemyShip.isDestroyed()) {
                         frags++;
                         break;
@@ -238,12 +247,12 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         }
 
         // нанесение урона игровому кораблю
-        for (int i = 0; i < bulletsList.size(); i++) {
-            bullet = bulletsList.get(i);
-            if(bullet.getOwner() == mainShip || bullet.isDestroyed()) continue;
-            if(mainShip.isBulletCollision(bullet)) {
-                mainShip.damage(bullet.getDamage());
-                bullet.setDestroyed(true);
+        for (int i = 0; i < weaponList.size(); i++) {
+            weapon = weaponList.get(i);
+            if(weapon.getOwner() == mainShip || weapon.isDestroyed()) continue;
+            if(mainShip.isBulletCollision(weapon.getRect())) {
+                mainShip.damage(weapon.getDamage());
+                weapon.setDestroyed(true);
             }
         }
     }
@@ -286,16 +295,22 @@ public class GameScreen extends Base2DScreen implements ActionListener {
     @Override
     public void dispose() {
         super.dispose();
+        //текстуры
         mainAtlas.dispose();
         bgTexture.dispose();
-        bullets.dispose();
+
+        //пулы оъектов
+        startMainShipWeapon.dispose();
         explosions.dispose();
         enemyShipPool.dispose();
+
+        //музыка
+        gameScreenMusic.dispose();
         soundExplosion.dispose();
-        mainShipShootSounds.dispose();
-        enemyShipShootSounds.dispose();
+        soundBullet.dispose();
+        soundLaser.dispose();
+
+        //шрифт
         font.dispose();
-
-
     }
 }

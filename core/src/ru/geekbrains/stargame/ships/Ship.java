@@ -6,35 +6,37 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.explosion.Explosion;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
 import ru.geekbrains.stargame.screen.GameScreen;
-import ru.geekbrains.stargame.weapon.Bullet;
-import ru.geekbrains.stargame.weapon.BulletPool;
+import ru.geekbrains.stargame.weapon.Weapon;
+import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 public abstract class Ship extends Sprite {
 
     private static final float DAMAGE_ANIMATE_INTERVAL = 0.1f;
     private float damageAnimateTimer = DAMAGE_ANIMATE_INTERVAL;
 
-    protected final Vector2 bulletVel = new Vector2(); // скорость пули
+    protected final WeaponEmmiter weaponEmmiter = new WeaponEmmiter();
+    protected final Vector2 weaponVel = new Vector2(); // скорость пули
     protected Vector2 velocity = new Vector2(); //скорость корабля
-
 
     protected Vector2 velocityShipX;
     protected Rect worldBounds; //границы мира
-    protected BulletPool bullets;
+    protected SpritesPool weaponPool;
+
     protected ExplosionPool explosionShip;
-    protected TextureRegion bulletRegion;
+    protected TextureRegion weaponRegion;
     protected Sound shipShootSound;
     protected float shipSoundVolume;
 
-    protected float bulletHeight;
+    protected float weaponHeight;
     protected float reloadInterval;
     protected float reloadTimer;
 
 
-    protected int bulletDamage;
+    protected int weaponDamage;
     protected int hp; // жизнь корабля
 
 
@@ -42,20 +44,20 @@ public abstract class Ship extends Sprite {
                  int rows,
                  int cols,
                  int frame,
-                 BulletPool bulletPool,
+                 SpritesPool weaponPool,
                  ExplosionPool explosionPool,
                  Rect worldBounds,
                  Sound shipShootSound
                 ) {
        super(region, rows, cols, frame);
-        this.bullets = bulletPool;
+        this.weaponPool = weaponPool;
         this.explosionShip = explosionPool;
         this.worldBounds = worldBounds;
         this.shipShootSound = shipShootSound;
     }
 
-    public Ship(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds, Sound shipShootSound) {
-        this.bullets = bulletPool;
+    public Ship(SpritesPool weaponPool, ExplosionPool explosionPool, Rect worldBounds, Sound shipShootSound) {
+        this.weaponPool = weaponPool;
         this.explosionShip = explosionPool;
         this.worldBounds = worldBounds;
         this.shipShootSound = shipShootSound;
@@ -71,6 +73,7 @@ public abstract class Ship extends Sprite {
             moveStop();
         }
     }
+
 
     public void moveRight() {
         velocity.set(velocityShipX);
@@ -101,8 +104,8 @@ public abstract class Ship extends Sprite {
     }
 
     public void shoot() {
-        Bullet bullet = bullets.obtain();
-        bullet.setBulletProp(this, bulletRegion, this.pos, bulletVel, bulletHeight, worldBounds, bulletDamage);
+        Weapon weapon = (Weapon) weaponPool.obtain();
+        weapon.setProperties(this, weaponRegion, this.pos, weaponVel, weaponHeight, worldBounds, weaponDamage);
         shipShootSound.setVolume(shipShootSound.play(), GameScreen.VOLUME);
     }
 
@@ -135,9 +138,6 @@ public abstract class Ship extends Sprite {
 
     }
 
-    public int getBulletDamage() {
-        return bulletDamage;
-    }
 
     public int getHp() {
         return hp;

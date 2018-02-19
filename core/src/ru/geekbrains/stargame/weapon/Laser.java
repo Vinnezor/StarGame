@@ -1,19 +1,19 @@
 package ru.geekbrains.stargame.weapon;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
 import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 
-public class Bullet extends Sprite implements Weapon {
+public class Laser extends Sprite implements Weapon {
 
     private final Vector2 velocity = new Vector2();
     private Rect worldBounds;
     private int damage;
     private Object owner;
 
-    public Bullet() {
+    public Laser() {
         regions = new TextureRegion[1];
     }
 
@@ -25,7 +25,7 @@ public class Bullet extends Sprite implements Weapon {
             float height,
             Rect worldBounds,
             int damage
-            ) {
+    ) {
         this.owner = owner;
         this.regions[0] = region;
         this.pos.set(pos0);
@@ -41,20 +41,13 @@ public class Bullet extends Sprite implements Weapon {
         if(isOutside(worldBounds)) setDestroyed(true);
     }
 
+    @Override
     public int getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
     public Object getOwner() {
         return owner;
-    }
-
-    public void setOwner(Object owner) {
-        this.owner = owner;
     }
 
     public Rect getRect() {
@@ -64,6 +57,4 @@ public class Bullet extends Sprite implements Weapon {
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
-
-
 }

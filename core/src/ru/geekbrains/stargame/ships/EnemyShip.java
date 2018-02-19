@@ -5,8 +5,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
+import ru.geekbrains.stargame.engine.pool.SpritesPool;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
 import ru.geekbrains.stargame.weapon.BulletPool;
+import ru.geekbrains.stargame.weapon.Weapon;
 
 public class EnemyShip extends Ship {
 
@@ -20,7 +22,7 @@ public class EnemyShip extends Ship {
 
 
     public EnemyShip(
-                     BulletPool bulletPool,
+                     SpritesPool bulletPool,
                      ExplosionPool explosionPool,
                      Rect worldBounds,
                      MainShip mainShip,
@@ -44,10 +46,10 @@ public class EnemyShip extends Ship {
             ) {
         this.regions = regions;
         this.velocity0.set(velocity0);
-        this.bulletRegion = bulletRegion;
-        this.bulletHeight = bulletHeight;
-        this.bulletVel.set(0f, bulletVY);
-        this.bulletDamage = bulletDamage;
+        this.weaponRegion = bulletRegion;
+        this.weaponHeight = bulletHeight;
+        this.weaponVel.set(0f, bulletVY);
+        this.weaponDamage = bulletDamage;
         this.reloadInterval = reloadInterval;
         this.shipSoundVolume = 1;
         this.hp = hp;
@@ -77,7 +79,7 @@ public class EnemyShip extends Ship {
             case FIGHT:
                 automaticFire(dt);
                 if(getBottom() < worldBounds.getBottom()){
-                    mainShip.damage(bulletDamage);
+                    mainShip.damage(weaponDamage);
                     boom();
                     setDestroyed(true);
                 }
