@@ -49,6 +49,7 @@ public class EnemyShip extends Ship {
         this.bulletVel.set(0f, bulletVY);
         this.bulletDamage = bulletDamage;
         this.reloadInterval = reloadInterval;
+        this.shipSoundVolume = 1;
         this.hp = hp;
         setHeightProportion(height);
         this.velocity.set(descentVel);

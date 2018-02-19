@@ -47,6 +47,8 @@ public class EnemyEmmiter {
     private Rect worldBounds;
     private TextureRegion bulletRegion;
 
+    private int stage;
+
 
     public EnemyEmmiter(TextureAtlas atlas, EnemyShipPool enemyShipPool, Rect worldBounds) {
         this.enemyShipPool = enemyShipPool;
@@ -58,7 +60,12 @@ public class EnemyEmmiter {
         this.generateInterval = 4f;
     }
 
-    public void generateEnemy(float delta) {
+    public void setToNewGame() {
+        stage = 1;
+    }
+
+    public void generateEnemy(float delta, int frags) {
+        stage = frags / 3 + 1;
         generateTimer += delta;
         if (generateInterval <= generateTimer) {
             generateTimer = 0;
@@ -83,10 +90,10 @@ public class EnemyEmmiter {
                 bulletRegion,
                 ENEMY_SMALL_BULLET_HEIGHT,
                 ENEMY_SMALL_BULLET_VY,
-                ENEMY_SMALL_BULLET_DAMAGE,
+                ENEMY_SMALL_BULLET_DAMAGE * stage,
                 ENEMY_SMALL_RELOAD_INTERVAL,
                 ENEMY_SMALL_SHIP_HEIGHT,
-                ENEMY_SMALL_HP
+                ENEMY_SMALL_HP + stage
         );
     }
 
@@ -97,10 +104,10 @@ public class EnemyEmmiter {
                 bulletRegion,
                 ENEMY_MIDDLE_BULLET_HEIGHT,
                 ENEMY_MIDDLE_BULLET_VY,
-                ENEMY_MIDDLE_BULLET_DAMAGE,
+                ENEMY_MIDDLE_BULLET_DAMAGE * stage,
                 ENEMY_MIDDLE_RELOAD_INTERVAL,
                 ENEMY_MIDDLE_SHIP_HEIGHT,
-                ENEMY_MIDDLE_HP
+                ENEMY_MIDDLE_HP + stage
         );
     }
 
@@ -111,12 +118,14 @@ public class EnemyEmmiter {
                 bulletRegion,
                 ENEMY_BIG_BULLET_HEIGHT,
                 ENEMY_BIG_BULLET_VY,
-                ENEMY_BIG_BULLET_DAMAGE,
+                ENEMY_BIG_BULLET_DAMAGE * stage,
                 ENEMY_BIG_RELOAD_INTERVAL,
                 ENEMY_BIG_SHIP_HEIGHT,
-                ENEMY_BIG_HP
+                ENEMY_BIG_HP + stage
         );
     }
 
-
+    public int getStage() {
+        return stage;
+    }
 }

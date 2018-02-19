@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.engine.Sprite;
+import ru.geekbrains.stargame.screen.GameScreen;
 
 public class Explosion  extends Sprite {
 
@@ -21,7 +22,7 @@ public class Explosion  extends Sprite {
     public void setExplosionSize(float height, Vector2 pos){
         this.pos.set(pos);
         setHeightProportion(height);
-        sound.play();
+        sound.setVolume(sound.play(), GameScreen.VOLUME);
     }
 
 

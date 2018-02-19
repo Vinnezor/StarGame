@@ -51,6 +51,10 @@ public abstract class SpritesPool <T extends Sprite> {
         }
     }
 
+    public void freeAllActiveObjects() {
+        activeObjects.clear();
+    }
+
     public void free(T object) {
         if(!activeObjects.remove(object)) {
             throw new RuntimeException("Попытка удаления несуществующего обьекта");

@@ -8,6 +8,7 @@ import ru.geekbrains.stargame.engine.Sprite;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.explosion.Explosion;
 import ru.geekbrains.stargame.explosion.ExplosionPool;
+import ru.geekbrains.stargame.screen.GameScreen;
 import ru.geekbrains.stargame.weapon.Bullet;
 import ru.geekbrains.stargame.weapon.BulletPool;
 
@@ -26,6 +27,7 @@ public abstract class Ship extends Sprite {
     protected ExplosionPool explosionShip;
     protected TextureRegion bulletRegion;
     protected Sound shipShootSound;
+    protected float shipSoundVolume;
 
     protected float bulletHeight;
     protected float reloadInterval;
@@ -101,10 +103,11 @@ public abstract class Ship extends Sprite {
     public void shoot() {
         Bullet bullet = bullets.obtain();
         bullet.setBulletProp(this, bulletRegion, this.pos, bulletVel, bulletHeight, worldBounds, bulletDamage);
-        shipShootSound.play();
+        shipShootSound.setVolume(shipShootSound.play(), GameScreen.VOLUME);
     }
 
     public void boom() {
+        hp = 0;
         Explosion explosion = explosionShip.obtain();
         explosion.setExplosionSize(getHeight(), pos);
     }
@@ -121,7 +124,10 @@ public abstract class Ship extends Sprite {
         frame = 1;
         damageAnimateTimer = 0;
         hp -= damage;
-        if (hp <= 0) {
+        if (hp < 0) {
+            hp = 0;
+        }
+        if (hp == 0) {
             setDestroyed(true);
             boom();
         }
@@ -132,4 +138,10 @@ public abstract class Ship extends Sprite {
     public int getBulletDamage() {
         return bulletDamage;
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+
 }
