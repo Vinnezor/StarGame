@@ -51,8 +51,14 @@ public class MainShip extends Ship {
             weaponRegion = alternativeAtlas.findRegion("greenLaserRay90");
             weaponHeight = 0.07f;
             weaponVel.set(0, 0.5f);
-            weaponDamage = 10;
+            weaponDamage = 5;
             reloadInterval = 1f;
+        } else if (weaponEmmiter.getWeaponName().equals(WeaponEmmiter.WEAPON_ROCKET)) {
+            weaponRegion = alternativeAtlas.findRegion("rocket1_small");
+            weaponHeight = 0.1f;
+            weaponVel.set(0, 0.8f);
+            weaponDamage = 10;
+            reloadInterval = 1.5f;
         }
 
     }

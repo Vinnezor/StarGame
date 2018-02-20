@@ -16,7 +16,6 @@ import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.math.Rnd;
-import ru.geekbrains.stargame.planet.Planet;
 import ru.geekbrains.stargame.star.Star;
 import ru.geekbrains.stargame.ui.ButtonExit;
 import ru.geekbrains.stargame.ui.ButtonPlay;
@@ -28,7 +27,6 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private final float BUTTON_PRESS_SCALE = 0.9f;
 
     private Texture bgTexture;
-    private Planet planet;
     private TextureAtlas atlas;
     private final int COUNT_STARS_ON_SCREEN = 20;
 

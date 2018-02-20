@@ -9,6 +9,7 @@ public class WeaponEmmiter {
 
     public static final String WEAPON_BULLET = "bullets";
     public static final String WEAPON_LASER = "laser";
+    public static final String WEAPON_ROCKET = "rocket";
 
     private String weaponName;
     private BulletPool bulletPool;
@@ -16,6 +17,7 @@ public class WeaponEmmiter {
     private Sound soundLaser;
     private float volume;
     private LaserPool laserPool;
+    private RocketPool rocketPool;
 
 
 
@@ -36,6 +38,13 @@ public class WeaponEmmiter {
                 bulletPool.setVolume(volume);
             }
             return bulletPool;
+        }else if (weaponName.equals(WEAPON_ROCKET)) {
+            if(rocketPool == null) {
+                rocketPool = new RocketPool();
+                rocketPool.setSound(soundBullet);
+                rocketPool.setVolume(volume);
+            }
+            return rocketPool;
         }
         else throw new RuntimeException("несуществующее оружие");
 
@@ -48,6 +57,8 @@ public class WeaponEmmiter {
     public void setWeaponLaser() {
         weaponName = WEAPON_LASER;
     }
+
+    public void setWeaponRocket() {weaponName = WEAPON_ROCKET;}
 
     public String getWeaponName() {
         return weaponName;

@@ -100,7 +100,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         weaponEmmiterMainship.setSoundBullet(soundBullet);
         weaponEmmiterMainship.setSoundLaser(soundLaser);
         weaponEmmiterMainship.setVolume(VOLUME);
-        weaponEmmiterMainship.setWeaponLaser();
+        weaponEmmiterMainship.setWeaponRocket();
         weaponPool = weaponEmmiterMainship.changeWeaponPool();
         mainShip = new MainShip(mainAtlas, mainAtlas2, weaponPool , weaponEmmiterMainship, explosions, worldBounds);
         enemyShipPool = new EnemyShipPool(weaponPool, explosions, worldBounds, mainShip);
