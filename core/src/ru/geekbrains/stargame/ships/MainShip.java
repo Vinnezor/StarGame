@@ -1,10 +1,7 @@
 package ru.geekbrains.stargame.ships;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
@@ -16,6 +13,7 @@ public class MainShip extends Ship {
 
     private final float SHIPS_HEIGHT = 0.15f;
     private final float BOTTOM_MARGIN = 0.05f;
+    private static final int MAX_HP = 100;
     private final int INVALID_POINTER = -1;
     private TextureAtlas atlas;
     private TextureAtlas alternativeAtlas;
@@ -68,7 +66,7 @@ public class MainShip extends Ship {
     public void setToNewGame(){
         pos.x = worldBounds.pos.x;
         setWeapon();
-        this.hp = 100;
+        this.hp = MAX_HP;
         setDestroyed(false);
     }
 
@@ -84,6 +82,11 @@ public class MainShip extends Ship {
         super.update(dt);
         automaticFire(dt);
         checkBounds();
+    }
+
+    public void addHp(int hp) {
+        this.hp += hp;
+        if(this.hp > MAX_HP) this.hp = MAX_HP;
     }
 
     @Override
