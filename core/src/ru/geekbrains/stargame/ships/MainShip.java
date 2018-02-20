@@ -2,7 +2,9 @@ package ru.geekbrains.stargame.ships;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
@@ -75,6 +77,7 @@ public class MainShip extends Ship {
         super.resize(worldBounds);
         setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
     }
+
 
     @Override
     public void update(float dt) {
@@ -164,4 +167,5 @@ public class MainShip extends Ship {
     public Vector2 getVelocity() {
         return velocity;
     }
+
 }

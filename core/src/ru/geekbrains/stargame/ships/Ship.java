@@ -131,6 +131,9 @@ public abstract class Ship extends Sprite {
 
     }
 
+    public TextureRegion getWeaponRegion() {
+        return weaponRegion;
+    }
 
     public int getHp() {
         return hp;

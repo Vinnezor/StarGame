@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 import ru.geekbrains.stargame.Background;
+import ru.geekbrains.stargame.contains.Container;
+import ru.geekbrains.stargame.contains.ContainerPool;
 import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.font.Font;
@@ -35,9 +37,7 @@ import ru.geekbrains.stargame.weapon.WeaponEmmiter;
 
 public class GameScreen extends Base2DScreen implements ActionListener {
 
-
-
-    private enum State {PLAYING, GAMEOVER};
+    private enum State {PLAYING, GAMEOVER}
     private State state;
 
     private final int COUNT_STARS_ON_SCREEN = 20;
@@ -52,6 +52,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
     private MainShip mainShip;
     private SpritesPool weaponPool;
     private EnemyShipPool enemyShipPool;
+    private ContainerPool containerPool;
     private EnemyEmmiter enemyEmmiter;
     private ArrayList<TrackingStar> stars;
     private Sound soundExplosion;
@@ -92,18 +93,17 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         mainAtlas = new TextureAtlas("textures/mainAtlas.tpack");
         mainAtlas2 = new TextureAtlas("textures/mainAtlas2.tpack");
 
-
         //Оостальные преобразования
         background = new Background(new TextureRegion(bgTexture));
         explosions = new ExplosionPool(mainAtlas, soundExplosion);
         weaponEmmiterMainship = new WeaponEmmiter();
-        weaponEmmiterMainship.setSoundBullet(soundBullet);
+        weaponEmmiterMainship.setWeaponBullet();
         weaponEmmiterMainship.setSoundLaser(soundLaser);
-        weaponEmmiterMainship.setVolume(VOLUME);
-        weaponEmmiterMainship.setWeaponRocket();
+        weaponEmmiterMainship.setSoundBullet(soundBullet);
         weaponPool = weaponEmmiterMainship.changeWeaponPool();
         mainShip = new MainShip(mainAtlas, mainAtlas2, weaponPool , weaponEmmiterMainship, explosions, worldBounds);
         enemyShipPool = new EnemyShipPool(weaponPool, explosions, worldBounds, mainShip);
+        containerPool = new ContainerPool(mainAtlas2, worldBounds);
         enemyEmmiter = new EnemyEmmiter(mainAtlas, enemyShipPool, worldBounds);
         stars = new ArrayList<TrackingStar>(COUNT_STARS_ON_SCREEN);
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
@@ -143,6 +143,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         weaponPool.freeAllDestroyedObjects();
         explosions.freeAllDestroyedObjects();
         enemyShipPool.freeAllDestroyedObjects();
+        containerPool.freeAllDestroyedObjects();
     }
 
 
@@ -159,6 +160,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
                 enemyShipPool.updateActiveObjects(delta);
                 enemyEmmiter.generateEnemy(delta, frags);
                 weaponPool.updateActiveObjects(delta);
+                containerPool.updateActiveObjects(delta);
                 if (mainShip.isDestroyed()) state = State.GAMEOVER;
                 break;
             case GAMEOVER:
@@ -183,6 +185,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         } else {
             enemyShipPool.drawActiveObjects(batch);
             weaponPool.drawActiveObjects(batch);
+            containerPool.drawActiveObjects(batch);
             mainShip.draw(batch);
         }
         batch.end();
@@ -206,6 +209,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         mainShip.setToNewGame();
         enemyShipPool.freeAllActiveObjects();
         weaponPool.freeAllActiveObjects();
+        containerPool.freeAllActiveObjects();
         //explosions.freeAllActiveObjects();
     }
 
@@ -222,6 +226,20 @@ public class GameScreen extends Base2DScreen implements ActionListener {
             if(enemyShip.pos.dst2(mainShip.pos) < minDist * minDist){
                 enemyShip.damage(enemyShip.getHp());
                 mainShip.damage(mainShip.getHp());
+                return;
+            }
+        }
+
+        //столкновение с ящиками
+        List<Container> containerList = containerPool.getActiveObjects();
+        Container container;
+        for (int i = 0; i < containerList.size(); i++) {
+            container = containerList.get(i);
+            minDist = container.getHalfWidth() + mainShip.getHalfWidth();
+            if(container.pos.dst2(mainShip.pos) < minDist * minDist){
+                weaponEmmiterMainship.rndWeaponChange();
+                mainShip.setWeapon();
+                container.setDestroyed(true);
                 return;
             }
         }
@@ -306,6 +324,7 @@ public class GameScreen extends Base2DScreen implements ActionListener {
         weaponPool.dispose();
         explosions.dispose();
         enemyShipPool.dispose();
+        containerPool.dispose();
 
         //музыка
         gameScreenMusic.dispose();

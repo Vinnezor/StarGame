@@ -4,6 +4,7 @@ package ru.geekbrains.stargame.weapon;
 import com.badlogic.gdx.audio.Sound;
 
 import ru.geekbrains.stargame.engine.pool.SpritesPool;
+import ru.geekbrains.stargame.screen.GameScreen;
 
 public class WeaponEmmiter {
 
@@ -15,7 +16,7 @@ public class WeaponEmmiter {
     private BulletPool bulletPool;
     private Sound soundBullet;
     private Sound soundLaser;
-    private float volume;
+    private float volume = GameScreen.VOLUME;
     private LaserPool laserPool;
     private RocketPool rocketPool;
 
@@ -47,7 +48,14 @@ public class WeaponEmmiter {
             return rocketPool;
         }
         else throw new RuntimeException("несуществующее оружие");
+    }
 
+    public void rndWeaponChange() {
+        float rnd = (float) Math.random();
+        if (rnd < 0.4f) setWeaponBullet();
+        else if ( rnd < 0.6f) setWeaponLaser();
+        else if ( rnd < 0.8f) setWeaponRocket();
+        changeWeaponPool();
     }
 
     public void setWeaponBullet () {
@@ -64,13 +72,8 @@ public class WeaponEmmiter {
         return weaponName;
     }
 
-
     public void setSoundBullet(Sound soundBullet) {
         this.soundBullet = soundBullet;
-    }
-
-    public void setVolume(float volume) {
-        this.volume = volume;
     }
 
     public void setSoundLaser(Sound soundLaser) {
