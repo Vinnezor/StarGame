@@ -16,7 +16,7 @@ public class ContainerPool extends SpritesPool<Container> {
     public ContainerPool(TextureAtlas atlas, Rect worldBounds) {
         this.atlas = atlas;
         this.worldBounds = worldBounds;
-        this.generateInterval = 10f;
+        this.generateInterval = 20f;
     }
 
     @Override

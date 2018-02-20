@@ -65,7 +65,7 @@ public class EnemyEmmiter {
     }
 
     public void generateEnemy(float delta, int frags) {
-        stage = frags / 3 + 1;
+        stage = frags / 10 + 1;
         generateTimer += delta;
         if (generateInterval <= generateTimer) {
             generateTimer = 0;

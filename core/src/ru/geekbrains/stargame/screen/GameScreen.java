@@ -247,8 +247,12 @@ public class GameScreen extends Base2DScreen implements ActionListener {
             container = containerList.get(i);
             minDist = container.getHalfWidth() + mainShip.getHalfWidth();
             if(container.pos.dst2(mainShip.pos) < minDist * minDist){
+                String currentWeapon = weaponEmmiterMainship.getWeaponName();
                 weaponEmmiterMainship.rndWeaponChange();
-                mainShip.setWeapon();
+                if(!currentWeapon.equals(weaponEmmiterMainship.getWeaponName())){
+                    mainShip.shoot();
+                    mainShip.setWeapon();
+                }
                 container.setDestroyed(true);
                 return;
             }
@@ -358,5 +362,6 @@ public class GameScreen extends Base2DScreen implements ActionListener {
 
         //шрифт
         font.dispose();
+
     }
 }

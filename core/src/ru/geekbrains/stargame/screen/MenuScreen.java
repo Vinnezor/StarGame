@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import ru.geekbrains.stargame.Background;
 import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Base2DScreen;
+import ru.geekbrains.stargame.engine.font.Font;
 import ru.geekbrains.stargame.engine.math.Rect;
 import ru.geekbrains.stargame.engine.math.Rnd;
 import ru.geekbrains.stargame.star.Star;
@@ -22,9 +23,11 @@ import ru.geekbrains.stargame.ui.ButtonPlay;
 
 public class MenuScreen extends Base2DScreen implements ActionListener {
 
+    private static final float FONT_SIZE = 0.07f;
     private final float BUTTON_HEIGHT = 0.15f;
     private final float BUTTON_WIDTH = 0.15f;
     private final float BUTTON_PRESS_SCALE = 0.9f;
+
 
     private Texture bgTexture;
     private TextureAtlas atlas;
@@ -34,7 +37,11 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private ButtonPlay btnPlay;
     private ButtonExit btnExit;
 
+
+    private Font font;
+
     private ArrayList<Star> stars;
+    private boolean showRecord;
 
     public MenuScreen(Game game) {
         super(game);
@@ -46,7 +53,6 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         super.show();
         bgTexture = new Texture("textures/bg.jpeg");
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
-
 //        planet = new Planet("planet/planet.png");
         background = new Background(new TextureRegion(bgTexture));
         btnPlay = new ButtonPlay(atlas, BUTTON_PRESS_SCALE, this);
@@ -58,6 +64,11 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         for (int i = 0; i < COUNT_STARS_ON_SCREEN ; i++) {
             stars.add(new Star(atlas, Rnd.nextFloat(-0.05f, 0.05f), Rnd.nextFloat(-0.5f, -0.1f), 0.01f));
         }
+
+        font = new ru.geekbrains.stargame.engine.font.Font("font/font.fnt", "font/font.png");
+        font.setWordSize(FONT_SIZE);
+        showRecord = false;
+
     }
 
     @Override
@@ -85,6 +96,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         btnExit.draw(batch);
         batch.end();
     }
+
 
     @Override
     protected void touchUp(Vector2 touch, int pointer) {
@@ -116,6 +128,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         super.dispose();
         atlas.dispose();
         bgTexture.dispose();
+
     }
 
 

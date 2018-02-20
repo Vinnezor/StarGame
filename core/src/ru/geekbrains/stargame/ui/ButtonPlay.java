@@ -16,7 +16,7 @@ public class ButtonPlay extends ScaledTouchUpButton {
 
     @Override
     public void resize(Rect worldBounds) {
-        setWidth(getHeight()); // костыль при обьявлении не устанавливает Width *TODO
+        //setWidth(getHeight());
         setLeft(worldBounds.getLeft());
         setBottom(worldBounds.getBottom());
 
