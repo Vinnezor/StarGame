@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 import java.util.List;
 import ru.geekbrains.stargame.Background;
-import ru.geekbrains.stargame.contains.Container;
-import ru.geekbrains.stargame.contains.ContainerPool;
-import ru.geekbrains.stargame.contains.RepairContainer;
-import ru.geekbrains.stargame.contains.RepairContainerPool;
+import ru.geekbrains.stargame.containers.Container;
+import ru.geekbrains.stargame.containers.ContainerPool;
+import ru.geekbrains.stargame.containers.RepairContainer;
+import ru.geekbrains.stargame.containers.RepairContainerPool;
 import ru.geekbrains.stargame.engine.ActionListener;
 import ru.geekbrains.stargame.engine.Base2DScreen;
 import ru.geekbrains.stargame.engine.font.Font;
